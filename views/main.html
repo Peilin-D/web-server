@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../css/base.css">
+	<link rel="stylesheet" type="text/css" href="../css/mainPage.css">
+</head>
+<body onload=username()>
+	<div class="topright">
+		<span id="myname"></span>
+		<a href="../pages/loginPage.html" onclick="return signout();">| 登出</a>
+	</div>
+	<div class="container">
+		<div class="row" style="margin: 50px;">
+			<div class="col align-items-center">
+				<h3 style="margin-bottom: 20px">导入 .csv 文件</h3>
+				<div 
+				  class="row align-items-center justify-content-center" 
+				  style="width: 60vw;height: 200px;border-radius: 10px;border-style: dashed;cursor: pointer;margin-bottom: 30px" 
+				  id="choose">
+					<div>点击/拖入文件</div>
+				</div>
+				<div id="holdtext"></div>
+				<div>选择病症</div>
+				<div>
+					<input type="text" class="dropdown-input" placeholder="肠癌病">
+					<div class="scrollable-menu pull-right" role="menu"></div>
+				</div>
+				<button class="btn btn-success col-4" id="run" style="margin-top: 20px;">开始分析</button>
+				<div id="notification"></div>
+			</div>
+		</div>
+	</div>
+	</body>
+	<script>
+		function goBack() {
+	    window.history.back();
+		}
+	</script>
+	<script type="text/javascript" src="../src/mainPage.js"></script>
+	</html>

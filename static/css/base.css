@@ -1,0 +1,19 @@
+body {
+	background-color: lightblue;
+/*	height: 100vh;*/
+}
+
+h1 {
+	text-align: center;
+	margin: 5px 0 10px 10px
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
+}
