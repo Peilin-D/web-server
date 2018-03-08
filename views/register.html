@@ -1,26 +1,45 @@
-<h1>注册</h1>
-<form class="form-signin">
-	<label for="doctor-name">姓名：</label>
-	<div>
-		<input type="text" id="full-name" class="form-control" name="full_name" required autofocus>
-	</div>
-	<label for="department">科室：</label>
-	<div>
-		<select class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="department" type="text" style="text-align:center" name="department">
-			<option>任意</option>
-		</select>
-	</div>
-	<div>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Medical Analysis Platform</title>
+	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/base.css">
+	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<h1>注册</h1>
+	<form class="form-signin">
+		<label for="doctor-name">姓名：</label>
+		<div>
+			<input type="text" id="full-name" class="form-control" name="full_name" required autofocus>
+		</div>
+		<label for="department">科室：</label>
+		<div>
+			<select class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="department" type="text" style="text-align:center" name="department">
+				<option>任意</option>
+			</select>
+		</div>
 		<label for="user-name">用户名：</label>
-		<input type="text" id="user-name" class="form-control" placeholder="2个以上字符" name="user_name" required autofocus>
-	</div>
-	<label for="pass-word">密码：</label>
-	<div>
-		<input type="password" id="pass-word" class="form-control" placeholder="6-16位数字/字母/符号组合" name="password" required>
-	</div>
-	<div>
-		<button class="btn btn-lg btn-primary btn-block" type="button" id="register">注册</button>
-		<button class="btn btn-lg btn-danger btn-block" id="cancel">返回</button>
-	</div>
-</form>	
-<script type="text/javascript" src="/src/registerPage.js"></script>
+		<div>
+			<input type="text" id="user-name" class="form-control" placeholder="2个以上字符" name="user_name" required autofocus>
+		</div>
+		<label for="pass-word">密码：</label>
+		<div>
+			<input type="password" id="pass-word" class="form-control" placeholder="6-16位数字/字母/符号组合" name="password" required>
+		</div>
+		<div>
+			<button class="btn btn-lg btn-primary btn-block" type="button" id="register">注册</button>
+			<button class="btn btn-lg btn-danger btn-block" id="cancel">返回</button>
+		</div>
+	</form>	
+	<script type="text/javascript">
+		$("#cancel").click(e => {
+			window.location.href = "/index.html"
+		})
+	</script>
+	<script type="text/javascript" src="/src/register.js"></script>
+</body>
+
+</html>

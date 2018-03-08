@@ -2,13 +2,16 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="../css/base.css">
-	<link rel="stylesheet" type="text/css" href="../css/mainPage.css">
+	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/base.css">
+	<link rel="stylesheet" type="text/css" href="/css/mainPage.css">
+	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
 </head>
-<body onload=username()>
+<body>
 	<div class="topright">
 		<span id="myname"></span>
-		<a href="../pages/loginPage.html" onclick="return signout();">| 登出</a>
+		<a id="signout">| 登出</a>
 	</div>
 	<div class="container">
 		<div class="row" style="margin: 50px;">
@@ -32,10 +35,10 @@
 		</div>
 	</div>
 	</body>
-	<script>
-		function goBack() {
+	<script type="text/javascript">
+		$("#signout").click(e => {
+			console.log('back')
 	    window.history.back();
-		}
+		})
 	</script>
-	<script type="text/javascript" src="../src/mainPage.js"></script>
-	</html>
+</html>

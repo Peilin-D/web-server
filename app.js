@@ -1,14 +1,11 @@
 const express = require('express')
 const app = express()
 
-// app.set('views', './views')
-// app.set('view engine', 'html')
-// app.use(express.static('./static'))
+app.use(express.static('./static'))
 app.use(express.static('./views'))
 
 app.get('/', (req, res) => {
-	res.redirect('/views/register.html')
-	// res.sendFile(__dirname + '/views/index.html')
+	res.sendFile(__dirname + '/views/index.html')
 })
 
 app.get('/register', (req, res) => {

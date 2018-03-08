@@ -1,4 +1,4 @@
-$("#register").click(() => {
+$("#register").click(e => {
 	var user = document.getElementById("user-name").value;
 	var users={
 		"name":document.getElementById("full-name").value,
@@ -15,11 +15,4 @@ $("#register").click(() => {
 		alert("password must have at least 6 characters");
 		return;
 	}
-})
-
-
-$("#cancel").click(() => {
-	$.get("/", data => {
-		$("body").html(data)
-	})
 })
