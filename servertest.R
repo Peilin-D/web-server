@@ -3,10 +3,10 @@ server <- function(){
     writeLines("Listening...")
     con <- socketConnection(host="localhost", port = 6011, blocking=TRUE,
                             server=TRUE, open="r+")
-    data <- readLines(con, 1)
+    data <- readLines(con, 2)
     print(data)
-    response <- toupper(data) 
-    writeLines(response, con) 
+    #response <- toupper(data) 
+    writeLines(data, con) 
     close(con)
   }
 }

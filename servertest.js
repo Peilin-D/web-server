@@ -3,7 +3,8 @@ var client = new net.Socket();
 
 client.connect(6011, '127.0.0.1', function() {
 	console.log('Connected');
-	client.write('hello\n');
+	var v = '哈罗 2'
+	client.write(v + '\n' + '1 \n');
 });
 
 client.on('data', function(data) {
