@@ -1,0 +1,19 @@
+package edc
+
+type EdcConfig struct {
+	Host           string
+	ResourceId     string
+	FriendlyName   string
+	Debug          bool
+	LogResponse    bool
+	UseV3Signature bool
+}
+
+var Defaults = EdcConfig{
+	Host:           "evidence.com",
+	ResourceId:     "fleet",
+	FriendlyName:   "Fleet Agent",
+	Debug:          false,
+	LogResponse:    false,
+	UseV3Signature: false,
+}

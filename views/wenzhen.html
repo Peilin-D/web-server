@@ -1,0 +1,50 @@
+<h1>智能问诊</h1>
+<div class="container">
+	<div class="row justify-content-between">
+		<form class="col">
+			<div>请填入最多五种病症</div>
+		  <div class="form-group">
+		    <label for="bz1">病候1</label>
+		    <input class="form-control" name="bh1" placeholder="选择病候">
+		  </div>
+		  <div class="form-group">
+		    <label for="bz2">病候2</label>
+		    <input class="form-control" name="bh2" placeholder="选择病候">
+		  </div>
+		  <div class="form-group">
+		    <label for="bz2">病候3</label>
+		    <input class="form-control" name="bh3" placeholder="选择病候">
+		  </div>
+		  <div class="form-group">
+		    <label for="bz2">病候4</label>
+		    <input class="form-control" name="bh4" placeholder="选择病候">
+		  </div>
+		  <div class="form-group">
+		    <label for="bz2">病候5</label>
+		    <input class="form-control" name="bh5" placeholder="选择病候">
+		  </div>
+		  <button type="submit" class="btn btn-primary" id="submit-bz">提交</button>
+		</form>
+		<div class="col">
+			<div>可能的病症如下</div>
+			<div id="bz"></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$("#submit-bz").click(e => {
+		e.preventDefault()
+		$("#bz").empty()
+		var arr = $("form").serializeArray()
+		$.ajax({
+			url: '/wenzhen',
+			data: arr
+		}).done(data => {
+			data.forEach(d => {
+				$("#bz").append(`<div>${d}</div>`)
+			})
+		}).fail(() => {
+			alert("服务器出错")
+		})
+	})
+</script>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/base.css">
+  <link href="/css/sidebar.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div id="wrapper" class="toggled">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+        	<a>夏树科技</a>  
+        </li>
+        <li>
+        	<div id="upload" class="sidebar-item">上传文件</div>
+        </li>
+        <li>
+          <div id="wenzhen" class="sidebar-item">智能问诊</div>
+        </li>
+        <li>
+          <div id="about" class="sidebar-item">关于我们</div>
+        </li>
+      </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+	  <!-- Page Content -->
+	  <a class="btn" id="menu-toggle">
+	  	<img src="/icons/menu.png" width="25" height="25">
+	  	<br>菜单</br>
+	  </a>
+	  <div id="page-content-wrapper"></div>
+	  <!-- /#page-content-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Menu Toggle Script -->
+  <script>
+  	$("#page-content-wrapper").ready(() => {
+  		$("#page-content-wrapper").load("/wenzhen.html")
+  		$("#wenzhen").addClass("item-focus")
+  	})
+	  $("#menu-toggle").click(e => {
+	      e.preventDefault();
+	      $("#wrapper").toggleClass("toggled");
+	  });
+	  $("#wenzhen").click(e => {
+	  	e.preventDefault();
+	  	$(".sidebar-item").removeClass("item-focus")
+	  	$("#wenzhen").addClass("item-focus")
+	  	$("#page-content-wrapper").load("/wenzhen.html")
+	  })
+	  $("#upload").click(e => {
+	  	$(".sidebar-item").removeClass("item-focus")
+	  	$("#upload").addClass("item-focus")
+	  	$("#page-content-wrapper").html(`
+	  		<form action="/upload" method="post" enctype="multipart/form-data">
+	  		<input type="file" name="yiy">
+	  		<button>Submit</button>
+	  		</form>`)
+	  })
+	  $("#about").click(e => {
+	  	e.preventDefault();
+	  	$(".sidebar-item").removeClass("item-focus")
+	  	$("#about").addClass("item-focus")
+	  	$("#page-content-wrapper").load("/about.html")
+	  })
+  </script>
+</body>
+</html>
