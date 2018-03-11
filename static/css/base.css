@@ -4,9 +4,9 @@ body {
 
 h1 {
 	text-align: center;
-	margin: 5px 0 10px 10px
+	margin-bottom: 30px;
 }
-
+/*
 .row {
 	display: flex;
 	flex-direction: row;
@@ -16,7 +16,7 @@ h1 {
 	display: flex;
 	flex-direction: column;
 }
-
+*/
 .form-signin {
   width: 100%;
   max-width: 330px;
@@ -47,3 +47,15 @@ h1 {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+#bz {
+	height: 300px;
+	max-height: 300px;
+	background-color: white;
+	overflow: auto;
+	border: 2px solid black;
+	border-radius: 5px;
+	padding-top: 8px;
+	padding-left: 8px;
+}
+
