@@ -1,6 +1,9 @@
 const express = require('express')
 const multer = require('multer')
 const app = express()
+const {rServerConnection, callbacks} = require('./rServerClient')
+
+var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -39,7 +42,11 @@ app.get('/wenzhen', (req, res) => {
 			retData.push(req.query[bh])
 		}
 	}
-	res.send(retData)
+  let msg = {type: 'wenzhen', data: retData}
+  rServerConn.send(msg)
+  callbacks['wenzhen'] = function (data) {
+    res.send(data)
+  }
 })
 
 app.listen(3000, () => {
