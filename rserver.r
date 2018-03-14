@@ -16,7 +16,7 @@ server <- function(){
 		if (is.na(df)) {
 			break
 		}
-	  writeLines(toJSON(df), conn)
+	    writeLines(toJSON(df), conn)
 	}
 	close(conn)
 }

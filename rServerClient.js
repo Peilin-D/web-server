@@ -3,7 +3,7 @@ const net = require('net');
 let callbacks = {}
 
 function sendToCallBacks(msg) {
-  if (msg.type[0] in callbacks) {
+  if (msg.type && msg.type[0] in callbacks) {
     callbacks[msg.type[0]](msg.data)
   }
 }
@@ -20,7 +20,9 @@ class rServerConnection {
 
   send(msg) {
     if (this.client && !this.client.connecting) {
-      this.client.write(JSON.stringify(msg)+'\n');
+		console.log('stringify:' + JSON.stringify(msg))
+		this.client.setEncoding('UTF8')
+		this.client.write(JSON.stringify(msg)+'\n');
     }
   }
 

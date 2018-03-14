@@ -1,14 +1,73 @@
-server <- function(){
-  while(TRUE){
-    writeLines("Listening...")
-    con <- socketConnection(host="localhost", port = 6011, blocking=TRUE,
-                            server=TRUE, open="r+")
-    data <- readLines(con, 2)
-    print(data)
-    #response <- toupper(data) 
-    writeLines(data, con) 
-    close(con)
-  }
+library('jsonlite')
+
+bc<-read.csv(file.path(getwd(), './b_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
+zc<-read.csv(file.path(getwd(), './z_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
+
+binghou <- rep_len("", dim(zc)[1])
+binghou_map = list()
+for(i in 1:(dim(zc)[1])) {
+  binghou[i] = zc[i, 1]
+  binghou_map[zc[i, 1]] = i
+}
+	
+bingzheng_map = list()
+bingzheng <- rep_len("", dim(bc)[1])
+for(i in 1:(dim(bc)[1])) {
+  bingzheng[i] = bc[i, 1]
+  bingzheng_map[bc[i, 1]] = i
+}
+
+server <- function(bh2bz){
+	conn <- socketConnection(host="localhost", port = 6011, blocking=TRUE, server=TRUE, open="r+", timeout=1000)
+	while(TRUE) {
+		jsonData <- readLines(conn, 1)
+		df <- tryCatch(
+			{
+				fromJSON(jsonData)
+			},
+			error=function(cond) {
+				print("Error fromJSON")
+				return (NA)
+			}
+		)
+		if (is.na(df)) {
+			break
+		}
+		type <- tryCatch(
+			{
+				df$type
+			},
+			error=function(cond) {
+				print("Error type")
+				return (NA)
+			}
+		)
+		if (is.na(type)) {
+			break
+		}
+		data <- tryCatch(
+			{
+				df$data
+			},
+			error=function(cond) {
+				print("Error data")
+				return (NA)
+			}
+		)
+		print(data)
+		if (is.na(data)) {
+			break
+		}
+		
+		if(type == 'wenzhen'){
+			print('wenzhen')
+			df$data <- wenzhen(data, bh2bz)
+			print('df:')
+			#print(df$data)
+		}
+	    writeLines(toJSON(df), conn)
+	}
+	close(conn)
 }
 
 
@@ -66,10 +125,11 @@ run <- function(){
 	colnames(m1) = med.dictionary
 	m1 = t(m1)
 	zero_var_col = which(apply(m1,2,var) ==0 )
-	bc<-read.csv(file.path(getwd(), './b_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
-	zc<-read.csv(file.path(getwd(), './z_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
+	
 	te<-read.csv(file.path(getwd(), './zhong1.csv'), encoding="GB18030", stringsAsFactors=FALSE, header=T)
 	attach(te)
+	
+	
 
 	# 1 sec
 	bh2bz = list()  # mapping from binghou to bingzheng
@@ -112,10 +172,78 @@ run <- function(){
 		df$rhs <- gsub(pattern='\\{', replacement='', x=df$rhs)
 		df$rhs <- gsub(pattern='}', replacement='', x=df$rhs)
 	}
+	
+	#print(length(bingzheng))
+	return(bh2bz)
+}
+
+wenzhen <- function(data, bh2bz){
+	#output$value = renderText({
+	#print(bh2bz)
+	#return
+	#bh <- c("", "", "", "", "")
+	
+	#list
+	bh <- c(0,0,0,0,0)
+	for(i in 1 : 5){
+		if(i <= length(data))
+			bh[i] = strtoi(data[i])
+		else break
+	}
+	#print(bh)
+	
+    zhenduan = NULL
+    for(i in 1:length(bh)) {
+      if (bh[i] == 0) {
+        next
+      }
+      if(i == 1) {
+        zhenduan = bh2bz[[binghou[bh[i]]]]
+      } else {
+        zhenduan = intersect(zhenduan, bh2bz[[binghou[bh[i]]]])
+     }
+    }
+	
+	#chinese
+	#bh <- c("", "", "", "", "")
+	#for(i in 1 : 5){
+	#	if(i <= length(data))
+	#		bh[i] = data[i]
+	#	else break
+	#}
+	#zhenduan = NULL
+    #for(i in 1:length(bh)) {
+    #  if (bh[i] == "") {
+    #    next
+     # }
+    #  if(i == 1) {
+    #    zhenduan = bh2bz[[bh[[i]]]]
+     # } else {
+    #    zhenduan = intersect(zhenduan, bh2bz[[bh[[i]]]])
+    #  }
+    #}
+	print(zhenduan)
+	diseases = NULL
+	if(!length(zhenduan)){
+		diseases <- rep_len(0, 1)
+	}
+	else{
+		diseases <- rep_len(0, length(zhenduan))
+		for(i in 1:length(zhenduan)){
+			diseases[i] = bingzheng_map[[zhenduan[i]]]
+		}
+	}
+	print(diseases)
+	#print(bingzheng_map)
+	#print(bingzheng_map[[zhenduan]])
+    
+	return(diseases)
+	#return(bingzheng_map[[zhenduan]])
 }
 
 #datalist <- loaddata()
 #loadpackage()
-run()
-server()
+ret <- run()
+server(ret)
+#server()
 
