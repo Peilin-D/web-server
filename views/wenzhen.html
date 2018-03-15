@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html>
-
+<head>
+	<link rel="stylesheet" type="text/css" href="/css/wenzhen.css">
+</head>
 <h1>智能问诊</h1>
 <div class="container">
 	<div class="row justify-content-between">
 		<form class="col">
 			<div>请填入最多五种病症</div>
 		  <div class="form-group">
-		    <label for="bz1">病候1</label>
-		    <input class="form-control" name="bh1" placeholder="选择病候">
+		    <label for="bh1">病候1</label>
+		    <input class="form-control dropdown-input" id="bh1" name="bh1" placeholder="选择病候">
+		    <div class="scrollable-menu" id="bh1"></div>
 		  </div>
 		  <div class="form-group">
-		    <label for="bz2">病候2</label>
-		    <input class="form-control" name="bh2" placeholder="选择病候">
+		    <label for="bh2">病候2</label>
+		    <input class="form-control dropdown-input" id="bh2" name="bh2" placeholder="选择病候">
+		    <div class="scrollable-menu" id="bh2"></div>
 		  </div>
 		  <div class="form-group">
-		    <label for="bz2">病候3</label>
-		    <input class="form-control" name="bh3" placeholder="选择病候">
+		    <label for="bh3">病候3</label>
+		    <input class="form-control dropdown-input" id="bh3" name="bh3" placeholder="选择病候">
+		    <div class="scrollable-menu" id="bh3"></div>
 		  </div>
 		  <div class="form-group">
-		    <label for="bz2">病候4</label>
-		    <input class="form-control" name="bh4" placeholder="选择病候">
+		    <label for="bh4">病候4</label>
+		    <input class="form-control dropdown-input" id="bh4" name="bh4" placeholder="选择病候">
+		    <div class="scrollable-menu" id="bh4"></div>
 		  </div>
 		  <div class="form-group">
-		    <label for="bz2">病候5</label>
-		    <input class="form-control" name="bh5" placeholder="选择病候">
+		    <label for="bh5">病候5</label>
+		    <input class="form-control dropdown-input" id="bh5" name="bh5" placeholder="选择病候">
+		    <div class="scrollable-menu" id="bh5"></div>
 		  </div>
 		  <button type="submit" class="btn btn-primary" id="submit-bz">提交</button>
 		</form>

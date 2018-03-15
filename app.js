@@ -9,8 +9,9 @@ var net = require('net');
 var client = new net.Socket();
 
 let diseases = []
+let binghou = []
 
-fs.readFile(`${__dirname}/b_coded.csv`, (err, contents) => {
+fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
   var str = iconv.decode(contents, 'gb18030')
   csv.parse(str, (err, data) => {
     data.forEach(d => {
@@ -18,6 +19,17 @@ fs.readFile(`${__dirname}/b_coded.csv`, (err, contents) => {
     })
     diseases.splice(0, 1);
     filteredDiseases = diseases;
+  })
+})
+
+fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
+  var str = iconv.decode(contents, 'gb18030')
+  csv.parse(str, (err, data) => {
+    data.forEach(d => {
+      binghou.push(d[0]);
+    })
+    binghou.splice(0, 1);
+    filteredBinghou = binghou;
   })
 })
 
@@ -40,10 +52,6 @@ var upload = multer({ storage: storage })
 app.use(express.static('./static'))
 app.use(express.static('./views'))
 
-/*client.connect(6011, '127.0.0.1', function() {
-	console.log('Connected');
-});*/
-
 app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/views/login.html')
 })
@@ -61,22 +69,26 @@ app.post('/upload', upload.single("yiy"), (req, res) => {
 })
 
 app.get('/wenzhen', (req, res) => {
-	let retData = []
+	let reqData = []
 	for (bh in req.query) {
 		if (req.query[bh] !== '') {
-			retData.push(req.query[bh])
+			reqData.push(req.query[bh])
 		}
 	}
-    let msg = {type: 'wenzhen', data: retData}       
+	let msg = {type: 'wenzhen', data: reqData}
 	rServerConn.send(msg)
 	callbacks['wenzhen'] = function (data) {
-		//send = diseases[data]
+		send = diseases[data]
 		let send = []
 		data.forEach(d => {
 			send.push(diseases[d - 1])
 		})
 		res.send(send)
 	}
+})
+
+app.get('/data/binghou', (req, res) => {
+	res.send(binghou)
 })
 
 app.listen(3000, () => {
