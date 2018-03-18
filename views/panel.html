@@ -26,6 +26,9 @@
           <div id="wenzhen" class="sidebar-item">智能问诊</div>
         </li>
         <li>
+          <div id="jiansuo" class="sidebar-item">中药检索</div>
+        </li>
+        <li>
           <div id="about" class="sidebar-item">关于我们</div>
         </li>
       </ul>
@@ -51,13 +54,19 @@
 	  $("#menu-toggle").click(e => {
 	      e.preventDefault();
 	      $("#wrapper").toggleClass("toggled");
-	  });
+	  })
 	  $("#wenzhen").click(e => {
 	  	e.preventDefault();
 	  	$(".sidebar-item").removeClass("item-focus")
 	  	$("#wenzhen").addClass("item-focus")
 	  	$("#page-content-wrapper").load("/wenzhen.html")
 	  })
+    $("#jiansuo").click(e => {
+      e.preventDefault();
+      $(".sidebar-item").removeClass("item-focus")
+      $("#jiansuo").addClass("item-focus")
+      $("#page-content-wrapper").load("/jiansuo.html")
+    })
 	  $("#upload").click(e => {
 	  	$(".sidebar-item").removeClass("item-focus")
 	  	$("#upload").addClass("item-focus")

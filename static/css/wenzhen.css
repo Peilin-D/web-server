@@ -1,8 +1,0 @@
-.scrollable-menu {
-  height: auto;
-  max-height: 100px;
-  background-color: white;
-  overflow-x: hidden;
-  z-index: 1;
-  position: absolute;
-}

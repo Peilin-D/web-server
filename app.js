@@ -11,6 +11,8 @@ var client = new net.Socket();
 let diseases = []
 let binghou = []
 
+let zhongyao = {}
+
 fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
   var str = iconv.decode(contents, 'gb18030')
   csv.parse(str, (err, data) => {
@@ -20,6 +22,29 @@ fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
     diseases.splice(0, 1);
     filteredDiseases = diseases;
   })
+})
+
+fs.readFile(`${__dirname}/data/zhong1.csv`, (err, contents) => {
+	let str = iconv.decode(contents, 'gb18030')
+	csv.parse(str, (err, data) => {
+		let names = data[0]
+	  for (var i = 0; i < names.length; i++) {
+	  	if (names[i] === '') {
+	  		continue
+	  	}
+	  	zhongyao[names[i]] = {
+	  		'药材来源': data[1][i],
+	  		'性状': data[2][i],
+	  		'鉴别': data[3][i],
+	  		'性味归经': data[4][i],
+	  		'功能主治': data[5][i],
+	  		'用法用量': data[6][i],
+	  		'注意事项': data[7][i],
+	  		'贮藏': data[8][i],
+	  		'标准收载': data[9][i]
+	  	}
+	  }
+	})
 })
 
 fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
@@ -33,10 +58,9 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
   })
 })
 
-
 const {rServerConnection, callbacks} = require('./rServerClient')
 
-var rServerConn = new rServerConnection()
+// var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -87,8 +111,21 @@ app.get('/wenzhen', (req, res) => {
 	}
 })
 
+app.get('/jiansuo', (req, res) => {
+	let name = req.query.name
+	if (name in zhongyao) {
+		res.send(zhongyao[name])
+	} else {
+		res.send('')
+	}
+})
+
 app.get('/data/binghou', (req, res) => {
 	res.send(binghou)
+})
+
+app.get('/data/zhongyao', (req, res) => {
+	res.send(Object.keys(zhongyao))
 })
 
 app.listen(3000, () => {
