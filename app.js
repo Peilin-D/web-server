@@ -120,6 +120,10 @@ app.get('/jiansuo', (req, res) => {
 	}
 })
 
+app.get('/tuijian', (req, res) => {
+	
+})
+
 app.get('/data/binghou', (req, res) => {
 	res.send(binghou)
 })

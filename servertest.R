@@ -65,7 +65,7 @@ server <- function(bh2bz){
 			print('df:')
 			#print(df$data)
 		}
-	    writeLines(toJSON(df), conn)
+	  writeLines(toJSON(df), conn)
 	}
 	close(conn)
 }

@@ -67,3 +67,7 @@ h1 {
   z-index: 1;
   position: absolute;
 }
+
+input.form-control {
+	width: 500px;
+}

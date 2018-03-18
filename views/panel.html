@@ -29,6 +29,9 @@
           <div id="jiansuo" class="sidebar-item">中药检索</div>
         </li>
         <li>
+          <div id="tuijian" class="sidebar-item">新处方推荐</div>
+        </li>
+        <li>
           <div id="about" class="sidebar-item">关于我们</div>
         </li>
       </ul>
@@ -45,7 +48,6 @@
   </div>
   <!-- /#wrapper -->
 
-  <!-- Menu Toggle Script -->
   <script>
   	$("#page-content-wrapper").ready(() => {
   		$("#page-content-wrapper").load("/wenzhen.html")
@@ -67,6 +69,12 @@
       $("#jiansuo").addClass("item-focus")
       $("#page-content-wrapper").load("/jiansuo.html")
     })
+    $("#tuijian").click(e => {
+      e.preventDefault();
+      $(".sidebar-item").removeClass("item-focus")
+      $("#tuijian").addClass("item-focus")
+      $("#page-content-wrapper").load("/tuijian.html")
+    })
 	  $("#upload").click(e => {
 	  	$(".sidebar-item").removeClass("item-focus")
 	  	$("#upload").addClass("item-focus")
@@ -74,7 +82,8 @@
 	  		<form action="/upload" method="post" enctype="multipart/form-data">
 	  		<input type="file" name="yiy">
 	  		<button>Submit</button>
-	  		</form>`)
+	  		</form>`
+      )
 	  })
 	  $("#about").click(e => {
 	  	e.preventDefault();
