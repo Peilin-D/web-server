@@ -60,7 +60,7 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
 
 const {rServerConnection, callbacks} = require('./rServerClient')
 
-// var rServerConn = new rServerConnection()
+var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -96,14 +96,14 @@ app.get('/wenzhen', (req, res) => {
 	let reqData = []
 	for (bh in req.query) {
 		if (req.query[bh] !== '') {
-			reqData.push(req.query[bh])
+			reqData.push(binghou.indexOf(req.query[bh]) + 1)
 		}
 	}
 	let msg = {type: 'wenzhen', data: reqData}
 	rServerConn.send(msg)
 	callbacks['wenzhen'] = function (data) {
-		send = diseases[data]
 		let send = []
+		//send = diseases[data]
 		data.forEach(d => {
 			send.push(diseases[d - 1])
 		})
@@ -121,7 +121,12 @@ app.get('/jiansuo', (req, res) => {
 })
 
 app.get('/tuijian', (req, res) => {
-	
+	console.log(req.query)
+	if(req.query['freq'] !== ''){
+		console.log(req.query['freq'])
+		let msg = {type: 'tuijian', data: req.query['freq']}
+		rServerConn.send(msg)
+	}
 })
 
 app.get('/data/binghou', (req, res) => {
