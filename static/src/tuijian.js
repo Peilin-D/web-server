@@ -1,7 +1,7 @@
 $("#submit-freq").click(e => {
 	//console.log(diseases)
 	e.preventDefault()
-	$("#bz").empty()
+	$("#chufang tbody").empty()
 	var freq = $("#freq").val()
 	$.ajax({
 		url: '/tuijian',
@@ -9,7 +9,14 @@ $("#submit-freq").click(e => {
 			freq: freq
 		}
 	}).done(data => {
-		console.log(data)
+		for (prop in data) {
+			$("#chufang tbody").append(`
+				<tr>
+					<th>${prop}</th>
+					<td>${data[prop]}</td>
+				</tr>
+			`)
+		}
 	}).fail(() => {
 		alert("服务器出错")
 	})

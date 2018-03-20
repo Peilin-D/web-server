@@ -10,8 +10,29 @@ var client = new net.Socket();
 
 let diseases = []
 let binghou = []
+let medicine = []
 
 let zhongyao = {}
+
+/*let medicine = []
+
+fs.readFile(`${__dirname}/yiy.csv`, (err, contents) => {
+  var str = iconv.decode(contents, 'gb18030')
+  csv.parse(str, (err, data) => {
+    data.forEach(d => {
+      if(medicine.indexOf(d[4]) < 0) medicine.push(d[4])
+    })
+  })
+})*/
+
+fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
+  var str = iconv.decode(contents, 'gb18030')
+  csv.parse(str, (err, data) => {
+    data.forEach(d => {
+      medicine.push(d[0]);
+    })
+  })
+})
 
 fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
   var str = iconv.decode(contents, 'gb18030')
@@ -113,6 +134,7 @@ app.get('/wenzhen', (req, res) => {
 
 app.get('/jiansuo', (req, res) => {
 	let name = req.query.name
+	
 	if (name in zhongyao) {
 		res.send(zhongyao[name])
 	} else {
@@ -127,6 +149,17 @@ app.get('/tuijian', (req, res) => {
 		let msg = {type: 'tuijian', data: req.query['freq']}
 		rServerConn.send(msg)
 	}
+	callbacks['tuijian'] = function (data) {
+		let send = []
+		data.forEach(d => {
+			let listOfSend = []
+			for(var i = 0; i < d.length; i++){
+				listOfSend.push(medicine[d[i]])
+			}
+			send.push(listOfSend)
+		})
+		res.send(send)
+	}
 })
 
 app.get('/data/binghou', (req, res) => {
@@ -134,6 +167,7 @@ app.get('/data/binghou', (req, res) => {
 })
 
 app.get('/data/zhongyao', (req, res) => {
+	//res.send(medicine)        //for downloading csv file
 	res.send(Object.keys(zhongyao))
 })
 

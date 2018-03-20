@@ -1,7 +1,13 @@
 library('jsonlite')
+library('stringr')
+
+Sys.setlocale(, 'chinese')
+Sys.setenv(LANG = "en_US.UTF-8")
 
 bc<-read.csv(file.path(getwd(), './b_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
 zc<-read.csv(file.path(getwd(), './z_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
+mc<-read.csv(file.path(getwd(), './medicine.csv'), encoding="GB18030", stringsAsFactors=FALSE)
+
 
 binghou <- rep_len("", dim(zc)[1])
 binghou_map = list()
@@ -17,11 +23,15 @@ for(i in 1:(dim(bc)[1])) {
   bingzheng_map[bc[i, 1]] = i
 }
 
-Sys.setlocale(, 'chinese')
-	Sys.setenv(LANG = "en_US.UTF-8")
+medicine_map = list()
+medicine <- rep_len("", dim(mc)[1])
+for(i in 1 : (dim(mc)[1])){
+	medicine[i] = mc[i, 1]
+	medicine_map[mc[i, 1]] = i
+}
 
 	yiy<-read.csv("yiy.csv", encoding="GB18030", stringsAsFactors=FALSE, header=T)
-
+	
 	library("arulesViz")
 	library("arules")
 	library(methods)
@@ -167,7 +177,12 @@ server <- function(bh2bz){
 		}
 		else if(type == 'tuijian'){
 			print('xinchufang:')
-			print(df$data)
+			options(digits=3)
+			freq = as.double(df$data)
+			print(freq)
+			df$data <- tuijian(freq)
+			#tuijian(freq)
+			#print(df$data)
 		}
 	  writeLines(toJSON(df), conn)
 	}
@@ -214,9 +229,35 @@ wenzhen <- function(data, bh2bz){
 	#return(bingzheng_map[[zhenduan]])
 }
 
-#tuijian <- function(){
-	
-#}
+tuijian <- function(freq){
+		s <- dat[,itemFrequency(dat)>freq]
+		bw <- labels(s)
+		ss <- as.matrix(bw)
+		ret <- c()
+		
+		
+		for(i in 1 : length(ss)){
+			
+			prescription = unlist(strsplit(ss[i], ','))
+			#index_list <- rep_len(0, length(prescription))
+			index_list <- c()
+			index <- c()
+			#print(prescription)
+			prescription[1] = substr(prescription[1], 2, str_length(prescription[1]))
+			if(length(prescription) > 1){
+				prescription[length(prescription)] = substr(prescription[length(prescription)], 1, str_length(prescription[length(prescription)]) - 1)
+			}
+			for(j in 1 : length(prescription)){
+				
+				index <- append(index_list, medicine_map[[prescription[j]]])
+				index_list <- index
+				#print(index)
+			}
+			ret[[i]] <- index
+		}
+		print(ret)
+		return(ret)
+}
 
 server(bh2bz)
 
