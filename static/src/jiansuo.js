@@ -16,9 +16,11 @@ $("#submit-name").click(e => {
 				</tr>
 			`)
 		}
-		
-	}).fail(() => {
-		alert("服务器出错")
+	}).fail(err => {
+		if(err.status === 401) {
+			alert(err.responseText)
+			window.location.replace("/login")
+		}
 	})
 })
 
@@ -26,15 +28,18 @@ $(document).ready(() => {
 	$.ajax({
 		url: '/data/zhongyao',
 	}).done(data => {
-		console.log(data)
 		filtered = data
 		original = data
+	}).fail(err => {
+		if(err.status === 401) {
+			alert(err.responseText)
+			window.location.replace("/login")
+		}
 	})
 })
 
-function clickDownload(aLink)
-{
-    var str = filtered.join('\n');
-    str =  encodeURIComponent(str);
-    aLink.href = "data:text/csv;charset=utf-8,\ufeff"+str;
+function clickDownload(aLink) {
+  var str = filtered.join('\n');
+  str =  encodeURIComponent(str);
+  aLink.href = "data:text/csv;charset=utf-8,\ufeff"+str;
 } 

@@ -1,5 +1,4 @@
 $("#submit-bz").click(e => {
-	//console.log(diseases)
 	e.preventDefault()
 	$("#bz").empty()
 	var arr = $("form").serializeArray()
@@ -10,8 +9,11 @@ $("#submit-bz").click(e => {
 		data.forEach(d => {
 			$("#bz").append(`<div>${d}</div>`)
 		})
-	}).fail(() => {
-		alert("服务器出错")
+	}).fail(err => {
+		if (err.status === 401) {
+			alert(err.responseText)
+			window.location.replace("/login")
+		}
 	})
 })
 
@@ -21,5 +23,10 @@ $(document).ready(() => {
 	}).done(data => {
 		filtered = data
 		original = data
+	}).fail(err => {
+		if (err.status === 401) {
+			alert(err.responseText)
+			window.location.replace("/login")
+		}
 	})
 })

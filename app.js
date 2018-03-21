@@ -4,6 +4,9 @@ const app = express()
 const fs = require('fs')
 const csv = require('csv')
 const iconv = require('iconv-lite')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const cons = require('consolidate')
 
 var net = require('net');
 var client = new net.Socket();
@@ -13,6 +16,10 @@ let binghou = []
 let medicine = []
 
 let zhongyao = {}
+
+let userCreds = {
+	pduan: '123'
+}
 
 /*let medicine = []
 
@@ -81,7 +88,7 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
 
 const {rServerConnection, callbacks} = require('./rServerClient')
 
-var rServerConn = new rServerConnection()
+// var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -94,23 +101,68 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage })
 
+function checkAuth(req, res, next) {
+	console.log(req.session, req.session.valid)
+	if (req.url !== '/' && req.url !== '/login' && req.url !== '/register' && (!req.session || !req.session.valid)) {
+		res.status(401).send('请重新登录')
+		return
+	}
+	next()
+}
+
+
+app.engine('html', cons.mustache)
+app.set('views', './views')
+app.set('view engine', 'html')
+
 app.use(express.static('./static'))
 app.use(express.static('./views'))
+app.use(bodyParser.urlencoded())
+app.use(session({ secret: 'xiashudata', cookie: { maxAge: 10000 }, rolling: true, saveUninitialized: false }))
+app.use(checkAuth)
 
 app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/views/login.html')
+	res.redirect('/login')
 })
 
 app.get('/register', (req, res) => {
-	res.sendFile(__dirname + '/views/register.html')
+	res.render('register')
 })
 
 app.get('/main', (req, res) => {
-	res.sendFile(__dirname + '/views/main.html')
+	res.render('panel')
 })
 
 app.post('/upload', upload.single("yiy"), (req, res) => {
 	res.end("Successfully Upload")
+})
+
+app.get('/login', (req, res) => {
+	res.render('login')
+})
+
+app.post('/login', (req, res) => {
+	let username = req.body.username
+	let password = req.body.password
+	if (!(username in userCreds)) {
+		res.status(401).send("用户名不存在")
+	} else if (userCreds[username] !== password) {
+		res.status(401).send("密码不正确")
+	} else {
+		req.session.valid = true
+		res.redirect('/main')
+	}
+})
+
+app.post('/register', (req, res) => {
+	let username = req.body.username
+	let password = req.body.password
+	if (username in userCreds) {
+		res.status(409).send("用户已存在")
+	} else {
+		userCreds[username] = password
+		res.sendStatus(201)
+	}
 })
 
 app.get('/wenzhen', (req, res) => {
@@ -143,7 +195,6 @@ app.get('/jiansuo', (req, res) => {
 })
 
 app.get('/tuijian', (req, res) => {
-	console.log(req.query)
 	if(req.query['freq'] !== ''){
 		console.log(req.query['freq'])
 		let msg = {type: 'tuijian', data: req.query['freq']}
@@ -174,7 +225,3 @@ app.get('/data/zhongyao', (req, res) => {
 app.listen(3000, () => {
 	console.log('Listening')
 })
-
-module.exports = {
-  diseases
-}

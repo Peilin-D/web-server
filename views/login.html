@@ -10,7 +10,7 @@
   </head>
   <body>
     <h1>医疗分析平台</h1>
-    <form class="form-signin" action="/panel.html">
+    <form class="form-signin">
       <label for="user-name" class="sr-only">用户名</label>
       <div>
         <input type="text" id="user-name" class="form-control" placeholder="用户名" required autofocus>
@@ -20,11 +20,39 @@
         <input type="password" id="pass-word" class="form-control" placeholder="密码" required>
       </div>
       <div>
-        <input type="checkbox" id="check-box" name="remember" style="text-align:center" value="0">记住登录状态
+        <input type="checkbox" id="check-box" name="remember" style="text-align:center" value="0">
+        记住登录状态
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit" id="login">登录</button>
+      <button class="btn btn-lg btn-primary btn-block" id="login">登录</button>
       <span>还没有帐号？</span>
-      <a href="/register.html">注册</a>
+      <a href="/register">注册</a>
     </form>
   </body>
+  <script type="text/javascript">
+    $(document).ready(() => {
+      if (window.localStorage.username) {
+        $("#user-name").val(window.localStorage.username)
+        $("#pass-word").focus()
+      }
+    })
+    $("#login").click(e => {
+      e.preventDefault()
+      window.localStorage.username = $("#user-name").val()
+      $.ajax({
+        url: '/login',
+        method: 'POST',
+        data: {
+          username: $("#user-name").val(),
+          password: $("#pass-word").val()
+        }
+      }).done(data => {
+        window.location.href = "/main"
+      }).fail(err => {
+        if (err.status === 401) {
+          alert(err.responseText)
+          window.location.reload()
+        }
+      })
+    })
+  </script>
 </html>

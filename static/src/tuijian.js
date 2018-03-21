@@ -17,7 +17,10 @@ $("#submit-freq").click(e => {
 				</tr>
 			`)
 		}
-	}).fail(() => {
-		alert("服务器出错")
+	}).fail(err => {
+		if (err.status === 401) {
+			alert(err.responseText)
+			window.location.replace("/login")
+		}
 	})
 })

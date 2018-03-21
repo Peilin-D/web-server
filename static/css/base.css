@@ -17,6 +17,11 @@ h1 {
 	flex-direction: column;
 }
 */
+
+input.form-control {
+	width: 500px;
+}
+
 .form-signin {
   width: 100%;
   max-width: 330px;
@@ -37,12 +42,14 @@ h1 {
 }
 
 .form-signin input[type="text"] {
+	width: 100%;
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
 .form-signin input[type="password"] {
+	width: 100%;
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -66,8 +73,4 @@ h1 {
   overflow-x: hidden;
   z-index: 1;
   position: absolute;
-}
-
-input.form-control {
-	width: 500px;
 }
