@@ -32,6 +32,9 @@
           <div id="tuijian" class="sidebar-item">新处方推荐</div>
         </li>
         <li>
+          <div id="julei" class="sidebar-item">新处方聚类</div>
+        </li>
+        <li>
           <div id="about" class="sidebar-item">关于我们</div>
         </li>
       </ul>
@@ -74,6 +77,12 @@
       $(".sidebar-item").removeClass("item-focus")
       $("#tuijian").addClass("item-focus")
       $("#page-content-wrapper").load("/tuijian.html")
+    })
+    $("#julei").click(e => {
+      e.preventDefault();
+      $(".sidebar-item").removeClass("item-focus")
+      $("#julei").addClass("item-focus")
+      $("#page-content-wrapper").load("/julei.html")
     })
 	  $("#upload").click(e => {
 	  	$(".sidebar-item").removeClass("item-focus")

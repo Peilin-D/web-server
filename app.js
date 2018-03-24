@@ -8,17 +8,18 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const cons = require('consolidate')
 
-var net = require('net');
-var client = new net.Socket();
-
 let diseases = []
 let binghou = []
 let medicine = []
-
 let zhongyao = {}
 
-let userCreds = {
-	pduan: '123'
+let userInfos = {} // user credentials & other info
+
+if (fs.existsSync(`${__dirname}/data/userInfos.json`)) {
+	fs.readFile(`${__dirname}/data/userInfos.json`, (err, contents) => {
+		userInfos = JSON.parse(contents)
+		console.log(userInfos)
+	})
 }
 
 /*let medicine = []
@@ -32,14 +33,14 @@ fs.readFile(`${__dirname}/yiy.csv`, (err, contents) => {
   })
 })*/
 
-fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
-  var str = iconv.decode(contents, 'gb18030')
-  csv.parse(str, (err, data) => {
-    data.forEach(d => {
-      medicine.push(d[0]);
-    })
-  })
-})
+// fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
+//   var str = iconv.decode(contents, 'gb18030')
+//   csv.parse(str, (err, data) => {
+//     data.forEach(d => {
+//       medicine.push(d[0]);
+//     })
+//   })
+// })
 
 fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
   var str = iconv.decode(contents, 'gb18030')
@@ -118,8 +119,8 @@ app.set('view engine', 'html')
 app.use(express.static('./static'))
 app.use(express.static('./views'))
 app.use(bodyParser.urlencoded())
-app.use(session({ secret: 'xiashudata', cookie: { maxAge: 10000 }, rolling: true, saveUninitialized: false }))
-app.use(checkAuth)
+app.use(session({ secret: 'xiashudata', cookie: { maxAge: 600000 }, rolling: true, saveUninitialized: false }))
+// app.use(checkAuth)
 
 app.get('/', (req, res) => {
 	res.redirect('/login')
@@ -142,11 +143,12 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
+	console.log(userInfos)
 	let username = req.body.username
 	let password = req.body.password
-	if (!(username in userCreds)) {
+	if (!(username in userInfos)) {
 		res.status(401).send("用户名不存在")
-	} else if (userCreds[username] !== password) {
+	} else if (userInfos[username].password !== password) {
 		res.status(401).send("密码不正确")
 	} else {
 		req.session.valid = true
@@ -157,10 +159,14 @@ app.post('/login', (req, res) => {
 app.post('/register', (req, res) => {
 	let username = req.body.username
 	let password = req.body.password
-	if (username in userCreds) {
+	if (username in userInfos) {
 		res.status(409).send("用户已存在")
 	} else {
-		userCreds[username] = password
+		userInfos[username] = { password: password }
+		fs.writeFile(`${__dirname}/data/userInfos.json`, JSON.stringify(userInfos), err => {
+			console.log(err)
+			console.log('file saved')
+		})
 		res.sendStatus(201)
 	}
 })
@@ -186,12 +192,15 @@ app.get('/wenzhen', (req, res) => {
 
 app.get('/jiansuo', (req, res) => {
 	let name = req.query.name
-	
 	if (name in zhongyao) {
 		res.send(zhongyao[name])
 	} else {
 		res.send('')
 	}
+})
+
+app.get('/julei', (req, res) => {
+	console.log(req.query.distance, req.query.method, parseInt(req.query.cut))
 })
 
 app.get('/tuijian', (req, res) => {

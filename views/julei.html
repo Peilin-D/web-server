@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<h1>新处方推荐</h1>
+<div>
+	<div class="container">
+		<div class="row justify-content-between">
+			<form class="col">
+			  <div class="form-group">
+			    <label for="distance">聚类使用的距离</label>
+			    <select class="form-control" id="distance">
+			    	<option>euclidean</option>
+			    	<option>maximum</option>
+			    	<option>manhattan</option>
+			    	<option>canberra</option>
+			    	<option>binary</option>
+			    </select>
+			    <label for="method">聚类方法</label>
+			    <select class="form-control" id="method">
+			    	<option>ward.D</option>
+			     	<option>ward.D2</option>
+						<option>single</option>
+						<option>complete</option>
+						<option>average</option>
+						<option>mcquitty</option>
+						<optiion>median</optiion>
+						<option>centroid</option>
+			    </select>
+			    <label for="cut">切线高度</label>
+			    <input class="form-control" id="cut" type="number" value="4" min="0" max="10" step="1">
+			  </div>
+			  <button type="submit" class="btn btn-primary" id="submit-julei">提交</button>
+			</form>
+			<div class="col">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+				  <li class="nav-item">
+				    <a class="nav-link active" id="tree-tab" data-toggle="tab" href="#tree" role="tab" aria-controls="tree" aria-selected="true">树状图</a>
+				  </li>
+				  <li class="nav-item">
+				    <a class="nav-link" id="vis-tab" data-toggle="tab" href="#vis" role="tab" aria-controls="vis" aria-selected="false">聚类图</a>
+				  </li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+				  <div class="tab-pane fade show active" id="tree" role="tabpanel" aria-labelledby="tree-tab">显示图片</div>
+				  <div class="tab-pane fade" id="vis" role="tabpanel" aria-labelledby="vis-tab">显示图片</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/src/julei.js"></script>
+</html>

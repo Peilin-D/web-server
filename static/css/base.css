@@ -18,8 +18,9 @@ h1 {
 }
 */
 
-input.form-control {
+input.form-control, select.form-control {
 	width: 500px;
+	margin-bottom: 10px;
 }
 
 .form-signin {
