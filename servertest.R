@@ -184,7 +184,7 @@ server <- function(bh2bz){
 			#tuijian(freq)
 			#print(df$data)
 		}
-		else if(type == 'julei'){
+		else if(type == 'dendrogram'){
 			print('julei:')
 			print(df$data[1])
 			juleiPlot1(df$data[1], df$data[2], df$data[3])
@@ -273,7 +273,7 @@ juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
 	print(juleiMethod)
 	xv = m1
     par(family="serif")
-	jpeg(file = "pictures//tree_structure.jpeg")
+	jpeg(file = "static//pictures//tree_structure.jpeg")
     plot(hclust(dist(data.matrix(xv),distance), method=juleiMethod),
     xlab=paste(distance, "distance;", juleiMethod, "clustering"))
 	

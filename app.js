@@ -36,14 +36,14 @@ fs.readFile(`${__dirname}/yiy.csv`, (err, contents) => {
   })
 })*/
 
-// fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
-//   var str = iconv.decode(contents, 'gb18030')
-//   csv.parse(str, (err, data) => {
-//     data.forEach(d => {
-//       medicine.push(d[0]);
-//     })
-//   })
-// })
+fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
+   var str = iconv.decode(contents, 'gb18030')
+   csv.parse(str, (err, data) => {
+     data.forEach(d => {
+       medicine.push(d[0]);
+     })
+   })
+})
 
 fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
   var str = iconv.decode(contents, 'gb18030')
@@ -208,10 +208,10 @@ app.get('/julei', (req, res) => {
 	reqData.push(distance.indexOf(req.query.distance) + 1)
 	reqData.push(juleiMethod.indexOf(req.query.method) + 1)
 	reqData.push(parseInt(req.query.cut))
-	let msg = {type: 'julei', data: reqData}
+	let msg = {type: 'dendrogram', data: reqData}
 	rServerConn.send(msg)
-	callbacks['julei'] = function(data){
-		
+	callbacks['dendrogram'] = function(data){
+		res.send('../pictures/tree_structure.jpeg')
 	}
 })
 
