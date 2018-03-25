@@ -6,13 +6,8 @@ $("#submit-julei").click(e => {
 			distance: $("#distance").val(),
 			method: $("#method").val(),
 			cut: $("#cut").val()
-		},
-		headers: {
-			'Cache-Control': 'no-cache' 
 		}
 	}).done(data => {
-		console.log(data)
-		$("#dendrogram").empty()
-		document.getElementById('dendrogram').src=data
+		document.getElementById('dendrogram').src = data + "?" + new Date().getTime();
 	})
 })
