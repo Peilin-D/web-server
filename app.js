@@ -15,6 +15,9 @@ let zhongyao = {}
 
 let userInfos = {} // user credentials & other info
 
+let distance = ['euclidean', 'maximum', 'manhattan', 'canberra', 'binary']
+let juleiMethod = ['ward.D', 'ward.D2', 'single', 'complete', 'average', 'mcquitty', 'centroid']
+
 if (fs.existsSync(`${__dirname}/data/userInfos.json`)) {
 	fs.readFile(`${__dirname}/data/userInfos.json`, (err, contents) => {
 		userInfos = JSON.parse(contents)
@@ -89,7 +92,7 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
 
 const {rServerConnection, callbacks} = require('./rServerClient')
 
-// var rServerConn = new rServerConnection()
+var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -200,7 +203,16 @@ app.get('/jiansuo', (req, res) => {
 })
 
 app.get('/julei', (req, res) => {
-	console.log(req.query.distance, req.query.method, parseInt(req.query.cut))
+	//console.log(req.query.distance, req.query.method, parseInt(req.query.cut))
+	let reqData = []
+	reqData.push(distance.indexOf(req.query.distance) + 1)
+	reqData.push(juleiMethod.indexOf(req.query.method) + 1)
+	reqData.push(parseInt(req.query.cut))
+	let msg = {type: 'julei', data: reqData}
+	rServerConn.send(msg)
+	callbacks['julei'] = function(data){
+		
+	}
 })
 
 app.get('/tuijian', (req, res) => {

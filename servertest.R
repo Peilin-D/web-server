@@ -184,6 +184,11 @@ server <- function(bh2bz){
 			#tuijian(freq)
 			#print(df$data)
 		}
+		else if(type == 'julei'){
+			print('julei:')
+			print(df$data[1])
+			juleiPlot1(df$data[1], df$data[2], df$data[3])
+		}
 	  writeLines(toJSON(df), conn)
 	}
 	close(conn)
@@ -257,6 +262,24 @@ tuijian <- function(freq){
 		}
 		print(ret)
 		return(ret)
+}
+
+juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
+	distanceList = c("euclidean", "maximum", "manhattan", "canberra", "binary")
+	juleiMethodList = c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "centroid")
+	distance = distanceList[distance_index]
+	juleiMethod = juleiMethodList[juleiMethod_index]
+	print(distance)
+	print(juleiMethod)
+	xv = m1
+    par(family="serif")
+	jpeg(file = "pictures//tree_structure.jpeg")
+    plot(hclust(dist(data.matrix(xv),distance), method=juleiMethod),
+    xlab=paste(distance, "distance;", juleiMethod, "clustering"))
+	
+    abline(h=cutval, lty=2, col="red")
+	dev.off()
+	return("ready")
 }
 
 server(bh2bz)
