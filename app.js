@@ -208,10 +208,13 @@ app.get('/julei', (req, res) => {
 	reqData.push(distance.indexOf(req.query.distance) + 1)
 	reqData.push(juleiMethod.indexOf(req.query.method) + 1)
 	reqData.push(parseInt(req.query.cut))
-	let msg = {type: 'dendrogram', data: reqData}
+	let msg = {type: 'julei', data: reqData}
 	rServerConn.send(msg)
-	callbacks['dendrogram'] = function(data){
-		res.send('../pictures/tree_structure.jpeg')
+	callbacks['julei'] = function(data){
+		let path = []
+		path.push('../pictures/tree_structure.jpeg')
+		path.push('../pictures/julei.jpeg')
+		res.send(path)
 	}
 })
 

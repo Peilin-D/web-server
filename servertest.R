@@ -80,7 +80,7 @@ for(i in 1 : (dim(mc)[1])){
 	colnames(m1) = med.dictionary
 	m1 = t(m1)
 	zero_var_col = which(apply(m1,2,var) ==0 )
-	
+	dis = dissimilarity(m1,  method = "pearson")
 	te<-read.csv(file.path(getwd(), './zhong1.csv'), encoding="GB18030", stringsAsFactors=FALSE, header=T)
 	attach(te)
 	
@@ -184,7 +184,7 @@ server <- function(bh2bz){
 			#tuijian(freq)
 			#print(df$data)
 		}
-		else if(type == 'dendrogram'){
+		else if(type == 'julei'){
 			print('julei:')
 			print(df$data[1])
 			juleiPlot1(df$data[1], df$data[2], df$data[3])
@@ -273,12 +273,20 @@ juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
 	print(juleiMethod)
 	xv = m1
     par(family="serif")
-	jpeg(file = "static//pictures//tree_structure.jpeg")
+	#jpeg(file = "static//pictures//tree_structure.jpeg")
     plot(hclust(dist(data.matrix(xv),distance), method=juleiMethod),
     xlab=paste(distance, "distance;", juleiMethod, "clustering"))
 	
     abline(h=cutval, lty=2, col="red")
+	#dev.off()
+	
+	#聚类图
+	hc.cut <- hcut(dis, k = cutval, scale = FALSE, hc_method = "ward.D2")
+	setwd("static//pictures")
+	png(file = "julei.png")
+    fviz_cluster(hc.cut,  data = m1[,-zero_var_col], ggtheme = theme(text = element_text(family = "serif")))
 	dev.off()
+	
 	return("ready")
 }
 
