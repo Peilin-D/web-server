@@ -273,12 +273,12 @@ juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
 	print(juleiMethod)
 	xv = m1
     par(family="serif")
-	#jpeg(file = "static//pictures//tree_structure.jpeg")
+	jpeg(file = "static//pictures//tree_structure.jpeg")
     plot(hclust(dist(data.matrix(xv),distance), method=juleiMethod),
     xlab=paste(distance, "distance;", juleiMethod, "clustering"))
 	
     abline(h=cutval, lty=2, col="red")
-	#dev.off()
+	dev.off()
 	
 	#聚类图
 	hc.cut <- hcut(dis, k = cutval, scale = FALSE, hc_method = "ward.D2")
