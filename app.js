@@ -212,8 +212,8 @@ app.get('/julei', (req, res) => {
 	rServerConn.send(msg)
 	callbacks['julei'] = function(data){
 		let path = []
-		path.push('../pictures/tree_structure.jpeg')
-		path.push('../pictures/julei.jpeg')
+		path.push('/pictures/tree_structure.jpeg')
+		path.push('/pictures/julei.jpeg')
 		res.send(path)
 	}
 })

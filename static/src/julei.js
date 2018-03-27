@@ -10,9 +10,8 @@ $("#submit-julei").click(e => {
 			cut: $("#cut").val()
 		}
 	}).done(data => {
-		$("#tree div").append(`<img id="dendrogram" style="width:600px;height:500px;">`)
-		document.getElementById('dendrogram').src = data[0] + "?" + new Date().getTime();
-		$("#vis div").append(`<img id="julei" style="width:600px;height:500px;">`)
-		document.getElementById('julei').src = data[1] + "?" + new Date().getTime();
+    console.log(data)
+		$("#tree").append(`<img id="dendrogram" style="width:600px;height:500px;" src=${data[0]}?${new Date().getTime()}>`)
+		$("#vis").append(`<img id="julei" style="width:600px;height:500px;" src=${data[1]}?${new Date().getTime()}>`)
 	})
 })

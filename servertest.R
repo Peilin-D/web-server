@@ -282,11 +282,9 @@ juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
 	
 	#聚类图
 	hc.cut <- hcut(dis, k = cutval, scale = FALSE, hc_method = "ward.D2")
-	setwd("static//pictures")
-	png(file = "julei.png")
-    fviz_cluster(hc.cut,  data = m1[,-zero_var_col], ggtheme = theme(text = element_text(family = "serif")))
+	fviz_cluster(hc.cut,  data = m1[,-zero_var_col], ggtheme = theme(text = element_text(family = "serif")))
+	ggsave("./static/pictures/julei.jpeg")
 	dev.off()
-	
 	return("ready")
 }
 
