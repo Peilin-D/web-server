@@ -5,100 +5,137 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/slider/bootstrap-slider.css">
   <link rel="stylesheet" type="text/css" href="/css/base.css">
-  <link href="/css/sidebar.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="/css/sidebar.css">
   <script type="text/javascript" src="/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/slider/bootstrap-slider.min.js"></script>
 </head>
 
 <body>
   <div id="wrapper" class="toggled">
-    <!-- Sidebar -->
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
         	<a>夏树科技</a>  
         </li>
         <li>
-        	<div id="upload" class="sidebar-item">上传文件</div>
+          <a href="#page-wenzhen">
+            <div id="wenzhen" class="sidebar-item">智能问诊</div>
+          </a>
         </li>
         <li>
-          <div id="wenzhen" class="sidebar-item">智能问诊</div>
+          <a href="#page-relation">
+            <div id="relation" class="sidebar-item">药物关联度分析</div>
+          </a>
         </li>
         <li>
-          <div id="jiansuo" class="sidebar-item">中药检索</div>
+          <a href="#page-jiansuo">
+            <div id="jiansuo" class="sidebar-item">中药检索</div>
+          </a>
         </li>
         <li>
-          <div id="tuijian" class="sidebar-item">新处方推荐</div>
+          <a href="#page-tuijian">
+            <div id="tuijian" class="sidebar-item">新处方推荐</div>
+          </a>
         </li>
         <li>
-          <div id="julei" class="sidebar-item">新处方聚类</div>
+          <a href="#page-julei">
+            <div id="julei" class="sidebar-item">新处方聚类</div>
+          </a>
         </li>
         <li>
-          <div id="about" class="sidebar-item">关于我们</div>
+          <a href="#page-about">
+            <div id="about" class="sidebar-item">关于我们</div>
+          </a>
         </li>
       </ul>
     </div>
-    <!-- /#sidebar-wrapper -->
 
-	  <!-- Page Content -->
 	  <a class="btn" id="menu-toggle">
 	  	<img src="/icons/menu.png" width="25" height="25">
 	  	<br>菜单</br>
 	  </a>
-	  <div id="page-content-wrapper"></div>
-	  <!-- /#page-content-wrapper -->
+    <div class="page-container">
+  	  <div id="page-wenzhen" class="page-content"></div>
+      <div id="page-relation" class="page-content"></div>
+      <div id="page-jiansuo" class="page-content"></div>
+      <div id="page-tuijian" class="page-content"></div>
+      <div id="page-julei" class="page-content"></div>
+      <div id="page-about" class="page-content"></div>
+    </div>
   </div>
-  <!-- /#wrapper -->
 
   <script>
-  	$("#page-content-wrapper").ready(() => {
-  		$("#page-content-wrapper").load("/wenzhen.html")
-  		$("#wenzhen").addClass("item-focus")
+    if (window.location.hash) {
+      let hash = window.location.hash
+      let page = hash.substr(6)
+      $(`#${page}`).addClass("item-focus")
+      $(hash).css("visibility", "visible")
+    }
+
+  	$("#page-wenzhen").ready(() => {
+  		$("#page-wenzhen").load("/wenzhen.html")
+      if (!window.location.hash) {
+  		  $("#wenzhen").addClass("item-focus")
+        $("#page-wenzhen").css("visibility", "visible")
+      }
   	})
+    $("#page-relation").ready(() => {
+      $("#page-relation").load("/relation.html")
+    })
+    $("#page-jiansuo").ready(() => {
+      $("#page-jiansuo").load("/jiansuo.html")
+    })
+    $("#page-tuijian").ready(() => {
+      $("#page-tuijian").load("/tuijian.html")
+    })
+    $("#page-julei").ready(() => {
+      $("#page-julei").load("/julei.html")
+    })
+    $("#page-about").ready(() => {
+      $("#page-about").load("/about.html")
+    })
 	  $("#menu-toggle").click(e => {
 	      e.preventDefault();
-	      $("#wrapper").toggleClass("toggled");
+	      $("#wrapper").toggleClass("toggled")
 	  })
 	  $("#wenzhen").click(e => {
-	  	e.preventDefault();
 	  	$(".sidebar-item").removeClass("item-focus")
 	  	$("#wenzhen").addClass("item-focus")
-	  	$("#page-content-wrapper").load("/wenzhen.html")
+      $(".page-content").css("visibility", "hidden")
+      $("#page-wenzhen").css("visibility", "visible")
 	  })
+    $("#relation").click(e => {
+      $(".sidebar-item").removeClass("item-focus")
+      $("#relation").addClass("item-focus")
+      $(".page-content").css("visibility", "hidden")
+      $("#page-relation").css("visibility", "visible")
+    })
     $("#jiansuo").click(e => {
-      e.preventDefault();
       $(".sidebar-item").removeClass("item-focus")
       $("#jiansuo").addClass("item-focus")
-      $("#page-content-wrapper").load("/jiansuo.html")
+      $(".page-content").css("visibility", "hidden")
+      $("#page-jiansuo").css("visibility", "visible")
     })
     $("#tuijian").click(e => {
-      e.preventDefault();
       $(".sidebar-item").removeClass("item-focus")
       $("#tuijian").addClass("item-focus")
-      $("#page-content-wrapper").load("/tuijian.html")
+      $(".page-content").css("visibility", "hidden")
+      $("#page-tuijian").css("visibility", "visible")
     })
     $("#julei").click(e => {
-      e.preventDefault();
       $(".sidebar-item").removeClass("item-focus")
       $("#julei").addClass("item-focus")
-      $("#page-content-wrapper").load("/julei.html")
+      $(".page-content").css("visibility", "hidden")
+      $("#page-julei").css("visibility", "visible")
     })
-	  $("#upload").click(e => {
-	  	$(".sidebar-item").removeClass("item-focus")
-	  	$("#upload").addClass("item-focus")
-	  	$("#page-content-wrapper").html(`
-	  		<form action="/upload" method="post" enctype="multipart/form-data">
-	  		<input type="file" name="yiy">
-	  		<button>Submit</button>
-	  		</form>`
-      )
-	  })
 	  $("#about").click(e => {
-	  	e.preventDefault();
 	  	$(".sidebar-item").removeClass("item-focus")
 	  	$("#about").addClass("item-focus")
-	  	$("#page-content-wrapper").load("/about.html")
+      $(".page-content").css("visibility", "hidden")
+      $("#page-about").css("visibility", "visible")
 	  })
   </script>
   

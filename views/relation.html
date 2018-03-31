@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<h1>药物关联度分析</h1>
+<div class="configs">
+	<div class="title-label">请选择要进行分析的药物</div>
+	<table id="medicines">
+		<tbody>
+		</tbody>
+	</table>
+	<div class="row">
+		<form class="col">
+	    <div>聚类集的个数</div>
+	    <div>
+		    <input id="num-clusters" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="150" data-slider-step="1" data-slider-value="10"/>
+		    <input type="text" class="slider-val" id="num-clusters-val" value="10" readonly>
+			</div>
+	    <div>支持度</div>
+	    <div>
+		    <input id="support" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.01" data-slider-value="0.3"/>
+		    <input type="text" class="slider-val" id="support-val" value="0.3" readonly>
+			</div>
+			<div>置信度</div>
+	    <div>
+		    <input id="confidence" data-slider-id='ex3Slider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.01" data-slider-value="0.3"/>
+		    <input type="text" class="slider-val" id="confidence-val" value="0.3" readonly>
+			</div>
+		</form>
+		<form class="col">
+	    <label for="sort">排列标准:</label>
+	    <select class="form-control" id="sort">
+	    	<option>概率</option>
+	    	<option>置信度</option>
+	    	<option>支持度</option>
+	    </select>
+		  <label for="min">每个聚类集中最少个数</label>
+		  <input class="form-control" id="min" type="number" value="2" min="1" max="4" step="1">
+		  <label for="max">每个聚类集中最多个数</label>
+		  <input class="form-control" id="max" type="number" value="3" min="1" max="6" step="1">
+		</form>
+	</div>
+	<button type="submit" class="btn btn-primary" id="submit-julei">提交</button>
+</div>
+<div class="graphs">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	  <li class="nav-item">
+	    <a class="nav-link active" id="grouped-tab" data-toggle="tab" href="#grouped" role="tab" aria-controls="grouped" aria-selected="true">Grouped</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" id="graph-tab" data-toggle="tab" href="#graph" role="tab" aria-controls="graph" aria-selected="false">Graph</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" id="scatter-tab" data-toggle="tab" href="#scatter" role="tab" aria-controls="scatter" aria-selected="false">Scatter</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" id="parallel-coord-tab" data-toggle="tab" href="#parallel-coord" role="tab" aria-controls="parallel-coord" aria-selected="false">Parallel Coordinates</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" id="matrix-tab" data-toggle="tab" href="#matrix" role="tab" aria-controls="matrix" aria-selected="false">Matrix</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" id="itemfreq-tab" data-toggle="tab" href="#itemfreq" role="tab" aria-controls="itemfreq" aria-selected="false">ItemFreq</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="false">Table</a>
+	  </li>
+	</ul>
+	<div class="tab-content" id="myTabContent">
+	  <div class="tab-pane fade show active" id="grouped" role="tabpanel" aria-labelledby="grouped-tab">
+	  </div>
+	  <div class="tab-pane fade" id="graph" role="tabpanel" aria-labelledby="graph-tab">
+	  </div>
+	  <div class="tab-pane fade" id="scatter" role="tabpanel" aria-labelledby="scatter-tab">
+	  </div>
+	  <div class="tab-pane fade" id="parallel-coord" role="tabpanel" aria-labelledby="parallel-coord-tab">
+	  </div>
+	  <div class="tab-pane fade" id="matrix" role="tabpanel" aria-labelledby="matrix-tab">
+	  </div>
+	  <div class="tab-pane fade" id="itemfreq" role="tabpanel" aria-labelledby="itemfreq-tab">
+	  </div>
+	  <div class="tab-pane fade" id="table" role="tabpanel" aria-labelledby="table-tab">
+	  </div>
+	</div>
+</div>
+<script type="text/javascript" src="/src/relation.js"></script>
+<style type="text/css">
+	#medicines {
+		margin-bottom: 20px;
+	}
+	.slider-val {
+		width: 50px;
+		margin-left: 10px;
+	}
+	.title-label {
+		font-size: 20px;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+	.configs {
+		margin-left: 40px;
+	}
+
+	button {
+		width: 150px;
+	}
+
+</style>
+</html>

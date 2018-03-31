@@ -18,6 +18,23 @@ h1 {
 }
 */
 
+.page-container {
+	position: relative;
+}
+.page-content {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	padding: 15px;
+	visibility: hidden;
+}
+
+.graphs {
+	width: 100%;
+	height: 500px;
+	margin-top: 20px;
+}
+
 input.form-control, select.form-control {
 	width: 500px;
 	margin-bottom: 10px;
@@ -74,4 +91,8 @@ input.form-control, select.form-control {
   overflow-x: hidden;
   z-index: 1;
   position: absolute;
+}
+
+.slider.slider-horizontal .slider-track-high {
+	background: white;
 }

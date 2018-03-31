@@ -246,6 +246,10 @@ app.get('/data/zhongyao', (req, res) => {
 	res.send(Object.keys(zhongyao))
 })
 
+app.get('/data/medicines', (req, res) => {
+  res.send(medicine.slice(0, 40))
+})
+
 app.listen(3000, () => {
 	console.log('Listening')
 })
