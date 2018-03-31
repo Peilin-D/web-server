@@ -9,36 +9,36 @@
 	</table>
 	<div class="row">
 		<form class="col">
-	    <div>聚类集的个数</div>
-	    <div>
+	    <div class="title-label">聚类集的个数</div>
+	    <div class="input-slide">
 		    <input id="num-clusters" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="150" data-slider-step="1" data-slider-value="10"/>
 		    <input type="text" class="slider-val" id="num-clusters-val" value="10" readonly>
 			</div>
-	    <div>支持度</div>
-	    <div>
+	    <div class="title-label">支持度</div>
+	    <div class="input-slide">
 		    <input id="support" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.01" data-slider-value="0.3"/>
 		    <input type="text" class="slider-val" id="support-val" value="0.3" readonly>
 			</div>
-			<div>置信度</div>
-	    <div>
+			<div class="title-label">置信度</div>
+	    <div class="input-slide">
 		    <input id="confidence" data-slider-id='ex3Slider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.01" data-slider-value="0.3"/>
 		    <input type="text" class="slider-val" id="confidence-val" value="0.3" readonly>
 			</div>
 		</form>
 		<form class="col">
-	    <label for="sort">排列标准:</label>
+	    <label for="sort" class="title-label">排列标准:</label>
 	    <select class="form-control" id="sort">
 	    	<option>概率</option>
 	    	<option>置信度</option>
 	    	<option>支持度</option>
 	    </select>
-		  <label for="min">每个聚类集中最少个数</label>
+		  <label for="min" class="title-label">每个聚类集中最少个数</label>
 		  <input class="form-control" id="min" type="number" value="2" min="1" max="4" step="1">
-		  <label for="max">每个聚类集中最多个数</label>
+		  <label for="max" class="title-label">每个聚类集中最多个数</label>
 		  <input class="form-control" id="max" type="number" value="3" min="1" max="6" step="1">
 		</form>
 	</div>
-	<button type="submit" class="btn btn-primary" id="submit-julei">提交</button>
+	<button type="submit" class="btn btn-primary" id="submit-relation">提交</button>
 </div>
 <div class="graphs">
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -97,6 +97,10 @@
 	}
 	.configs {
 		margin-left: 40px;
+	}
+
+	.input-slide {
+		margin-bottom: 10px;
 	}
 
 	button {

@@ -10,8 +10,8 @@ $("#medicines").ready(() => {
         $(`#tr${i}`).append(`
           <td>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="m${j}" checked>
-              <label class="form-check-label" for="m${j}">
+              <input class="form-check-input" type="checkbox" id="${j}" checked>
+              <label class="form-check-label" for="${j}">
               ${meds[j]}
               </label>
             </div>
@@ -21,6 +21,28 @@ $("#medicines").ready(() => {
       }
       i = j
     }
+  })
+})
+
+
+$("#submit-relation").click(e => {
+  e.preventDefault()
+  let meds = $("#medicines input:checked").map(function () {
+    return $(this).attr('id')
+  }).get()
+  $.ajax({
+    url: "/relation",
+    data: {
+      medsChosen: meds,
+      numClusters: $("#num-clusters").val(),
+      supp: $("#support").val(),
+      conf: $("#confidence").val(),
+      sort: $("#sort").val() === "概率" ? "lift" : $("#sort").val() === "支持度" ? "support" : "confidence",
+      min:  $("#min").val(),
+      max:  $("#max").val()
+    }
+  }).done(data => {
+    // display images here
   })
 })
 

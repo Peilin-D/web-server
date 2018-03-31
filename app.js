@@ -92,7 +92,7 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
 
 const {rServerConnection, callbacks} = require('./rServerClient')
 
-var rServerConn = new rServerConnection()
+// var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -191,6 +191,11 @@ app.get('/wenzhen', (req, res) => {
 		})
 		res.send(send)
 	}
+})
+
+app.get('/relation', (req, res) => {
+  console.log(req.query)
+  res.send('')
 })
 
 app.get('/jiansuo', (req, res) => {
