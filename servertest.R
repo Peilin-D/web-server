@@ -1,6 +1,6 @@
 library('jsonlite')
 library('stringr')
-
+library(shiny)
 Sys.setlocale(, 'chinese')
 Sys.setenv(LANG = "en_US.UTF-8")
 
@@ -28,6 +28,11 @@ medicine <- rep_len("", dim(mc)[1])
 for(i in 1 : (dim(mc)[1])){
 	medicine[i] = mc[i, 1]
 	medicine_map[mc[i, 1]] = i
+}
+
+relation_meds <- rep_len("", 40)
+for(i in 1:40){
+	relation_meds[i] = mc[i, 1]
 }
 
 	yiy<-read.csv("yiy.csv", encoding="GB18030", stringsAsFactors=FALSE, header=T)
@@ -156,17 +161,20 @@ server <- function(bh2bz){
 		if (is.na(type)) {
 			break
 		}
-		data <- tryCatch(
-			{
-				df$data
-			},
-			error=function(cond) {
-				print("Error data")
-				return (NA)
+		
+		if(type != 'relation'){
+			data <- tryCatch(
+				{
+					df$data
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			if (is.na(data)) {
+				break
 			}
-		)
-		if (is.na(data)) {
-			break
 		}
 		
 		if(type == 'wenzhen'){
@@ -188,6 +196,99 @@ server <- function(bh2bz){
 			print('julei:')
 			print(df$data[1])
 			juleiPlot1(df$data[1], df$data[2], df$data[3])
+		}
+		else if(type == 'relation'){
+			print('relation')
+			#[numClusters, supp, conf, sort, min, max]
+			meds <- tryCatch(
+				{
+					df$medsChosen
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			medsChosen = c()
+			for(i in 1:length(meds)){
+				medsChosen <- append(medsChosen, strtoi(meds[i]))
+			}
+			print(medsChosen)
+			
+			numClusters <- tryCatch(
+				{
+					df$numClusters
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			numClusters = strtoi(numClusters)
+			print(numClusters)
+			#print(numClusters)
+			
+			supp <- tryCatch(
+				{
+					df$supp
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			options(digits=3)
+			supp = as.double(supp)
+			print(supp)
+			
+			conf <- tryCatch(
+				{
+					df$conf
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			options(digits=3)
+			conf = as.double(conf)
+			print(conf)
+			
+			sort <- tryCatch(
+				{
+					df$sort
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			#print(sort)
+			
+			min <- tryCatch(
+				{
+					df$min
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			min = strtoi(min)
+			print(min)
+			
+			max <- tryCatch(
+				{
+					df$max
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			max = strtoi(max)
+			print(max)
+			relation(meds, medsChosen, numClusters, sort, supp, conf, min, max)
 		}
 	  writeLines(toJSON(df), conn)
 	}
@@ -286,6 +387,57 @@ juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
 	ggsave("./static/pictures/julei.jpeg")
 	dev.off()
 	return("ready")
+}
+
+relation <- function(meds, medsChosen, numClusters, sort, supp, conf, minL, maxL){
+	medicineList = c()
+	for(i in 1:length(medsChosen)){
+		medicineList <- append(medicineList, relation_meds[medsChosen[i]])
+	}
+	print(medicineList)
+	tr <- as(dataset[,medsChosen], 'transactions')
+	print(class(tr))
+	#print(class(tr))
+    ar <- apriori(tr, parameter=list(support=supp, confidence=conf, minlen=minL, maxlen=maxL))
+	#print(medicineList)
+    nRule <- length(medsChosen)
+	print("done")
+    
+	par(family="STKaiti")
+	jpeg(file = "static//pictures//grouped_plot.jpeg")
+    plot(sort(ar, by=sort)[1:nRule], method='grouped', control=list(numClusters))
+	dev.off()
+	
+	par(family="STKaiti")
+	jpeg(file = "static//pictures//graph_plot.jpeg")
+    plot(sort(ar, by=sort)[1:nRule], method='graph')
+	dev.off()
+	
+    par(family="STKaiti")
+	jpeg(file = "static//pictures//scatter_plot.jpeg")
+    plot(sort(ar, by=sort)[1:nRule], method='scatterplot')
+	dev.off()
+	
+	par(family="STKaiti")
+	jpeg(file = "static//pictures//paracoord_plot.jpeg")
+    plot(sort(ar, by=sort)[1:nRule], method='paracoord')
+	dev.off()
+	
+	par(family="STKaiti")
+	jpeg(file = "static//pictures//matrix_plot.jpeg")
+    plot(sort(ar, by=sort)[1:nRule], method='matrix')
+	dev.off()
+	
+    trans <- as(dataset[,medsChosen], 'transactions')
+    par(family="STKaiti")
+	jpeg(file = "static//pictures//item_freq.jpeg")
+    itemFrequencyPlot(trans)
+	dev.off()
+	
+	par(family="STKaiti")
+	jpeg(file = "static//pictures//table.jpeg")
+	inspect(sort(ar, by=sort))
+	dev.off()
 }
 
 server(bh2bz)

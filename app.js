@@ -92,7 +92,7 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
 
 const {rServerConnection, callbacks} = require('./rServerClient')
 
-// var rServerConn = new rServerConnection()
+var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -194,8 +194,18 @@ app.get('/wenzhen', (req, res) => {
 })
 
 app.get('/relation', (req, res) => {
-  console.log(req.query)
-  res.send('')
+	let msg = {type: 'relation', medsChosen: req.query.medsChosen, numClusters: req.query.numClusters, supp: req.query.supp, conf:req.query.conf, sort:req.query.sort, min:req.query.min, max:req.query.max}
+	rServerConn.send(msg)
+	callbacks['relation'] = function(data){
+		let path = []
+		path.push('/pictures/grouped_plot.jpeg')
+		path.push('/pictures/graph_plot.jpeg')
+		path.push('/pictures/scatter_plot.jpeg')
+		path.push('/pictures/paracoord_plot.jpeg')
+		path.push('/pictures/matrix_plot.jpeg')
+		path.push('/pictures/item_freq.jpeg')
+		res.send(path)
+	}
 })
 
 app.get('/jiansuo', (req, res) => {

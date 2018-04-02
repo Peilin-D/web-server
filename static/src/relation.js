@@ -27,6 +27,12 @@ $("#medicines").ready(() => {
 
 $("#submit-relation").click(e => {
   e.preventDefault()
+  $("#grouped").empty()
+  $("#graph").empty()
+  $("#scatter").empty()
+  $("#parallel-coord").empty()
+  $("#matrix").empty()
+  $("#itemfreq").empty()
   let meds = $("#medicines input:checked").map(function () {
     return $(this).attr('id')
   }).get()
@@ -43,6 +49,12 @@ $("#submit-relation").click(e => {
     }
   }).done(data => {
     // display images here
+	$("#grouped").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[0]}?${new Date().getTime()}>`)
+	$("#graph").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[1]}?${new Date().getTime()}>`)
+	$("#scatter").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[2]}?${new Date().getTime()}>`)
+	$("#parallel-coord").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[3]}?${new Date().getTime()}>`)
+	$("#matrix").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[4]}?${new Date().getTime()}>`)
+	$("#itemfreq").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[5]}?${new Date().getTime()}>`)
   })
 })
 
