@@ -80,7 +80,6 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
 })
 
 const {rServerConnection, callbacks} = require('./rServerClient')
-
 var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
@@ -183,9 +182,10 @@ app.get('/wenzhen', (req, res) => {
 })
 
 app.get('/relation', (req, res) => {
-  let msg = {type: 'relation', medsChosen: req.query.medsChosen, numClusters: req.query.numClusters, supp: req.query.supp, conf:req.query.conf, sort:req.query.sort, min:req.query.min, max:req.query.max}
+	let msg = {type: 'relation', medsChosen: req.query.medsChosen, numClusters: req.query.numClusters, supp: req.query.supp, conf:req.query.conf, sort:req.query.sort, min:req.query.min, max:req.query.max}
+	
   rServerConn.send(msg)
-	callbacks['relation'] = function(data){
+	callbacks['relation'] = function(data) {
 		let path = []
 		path.push('/pictures/grouped_plot.jpeg')
 		path.push('/pictures/graph_plot.jpeg')
@@ -199,15 +199,13 @@ app.get('/relation', (req, res) => {
 		fs.readFile(`${__dirname}/association_rules.csv`, (err, contents) => {
 		  var str = iconv.decode(contents, 'gb18030')
 		  csv.parse(str, (err, data) => {
-  			data.forEach(d => {
-  			  table.push(d)
-  			  //console.log(d)
-  			})
-  			// console.log(table)
-  			let send = []
-  			send.push(path)
-  			send.push(table)
-  			res.send(send)
+			data.forEach(d => {
+			  table.push(d)
+			})
+			let send = []
+			send.push(path)
+			send.push(table)
+			res.send(send)
 		  })
 		})
 	}
