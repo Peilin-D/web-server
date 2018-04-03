@@ -25,17 +25,6 @@ if (fs.existsSync(`${__dirname}/data/userInfos.json`)) {
 	})
 }
 
-/*let medicine = []
-
-fs.readFile(`${__dirname}/yiy.csv`, (err, contents) => {
-  var str = iconv.decode(contents, 'gb18030')
-  csv.parse(str, (err, data) => {
-    data.forEach(d => {
-      if(medicine.indexOf(d[4]) < 0) medicine.push(d[4])
-    })
-  })
-})*/
-
 fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
    var str = iconv.decode(contents, 'gb18030')
    csv.parse(str, (err, data) => {
@@ -204,7 +193,24 @@ app.get('/relation', (req, res) => {
 		path.push('/pictures/paracoord_plot.jpeg')
 		path.push('/pictures/matrix_plot.jpeg')
 		path.push('/pictures/item_freq.jpeg')
-		res.send(path)
+		
+		let table = []
+
+		fs.readFile(`${__dirname}/association_rules.csv`, (err, contents) => {
+		  var str = iconv.decode(contents, 'gb18030')
+		  csv.parse(str, (err, data) => {
+			data.forEach(d => {
+			  table.push(d)
+			  //console.log(d)
+			})
+			console.log(table)
+			let send = []
+			send.push(path)
+			send.push(table)
+			res.send(send)
+		  })
+		})
+		
 	}
 })
 
@@ -248,6 +254,7 @@ app.get('/tuijian', (req, res) => {
 			}
 			send.push(listOfSend)
 		})
+		console.log(send)
 		res.send(send)
 	}
 })

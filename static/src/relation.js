@@ -33,6 +33,7 @@ $("#submit-relation").click(e => {
   $("#parallel-coord").empty()
   $("#matrix").empty()
   $("#itemfreq").empty()
+  $("#table").empty()
   let meds = $("#medicines input:checked").map(function () {
     return $(this).attr('id')
   }).get()
@@ -49,12 +50,26 @@ $("#submit-relation").click(e => {
     }
   }).done(data => {
     // display images here
-	$("#grouped").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[0]}?${new Date().getTime()}>`)
-	$("#graph").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[1]}?${new Date().getTime()}>`)
-	$("#scatter").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[2]}?${new Date().getTime()}>`)
-	$("#parallel-coord").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[3]}?${new Date().getTime()}>`)
-	$("#matrix").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[4]}?${new Date().getTime()}>`)
-	$("#itemfreq").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${data[5]}?${new Date().getTime()}>`)
+	let path = data[0]
+	$("#grouped").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[0]}?${new Date().getTime()}>`)
+	$("#graph").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[1]}?${new Date().getTime()}>`)
+	$("#scatter").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[2]}?${new Date().getTime()}>`)
+	$("#parallel-coord").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[3]}?${new Date().getTime()}>`)
+	$("#matrix").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[4]}?${new Date().getTime()}>`)
+	$("#itemfreq").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[5]}?${new Date().getTime()}>`)
+	
+	let table = data[1]
+	console.log(table[2][1])
+	console.log(table[2])
+	for (prop in table) {
+		
+		$("#table tbody").append(`
+			<tr>
+				<th>1</th>
+				<td>2</td>
+			</tr>
+		`)
+	}
   })
 })
 

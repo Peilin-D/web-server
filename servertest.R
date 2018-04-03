@@ -396,10 +396,10 @@ relation <- function(meds, medsChosen, numClusters, sort, supp, conf, minL, maxL
 	}
 	print(medicineList)
 	tr <- as(dataset[,medsChosen], 'transactions')
-	print(class(tr))
 	#print(class(tr))
     ar <- apriori(tr, parameter=list(support=supp, confidence=conf, minlen=minL, maxlen=maxL))
-	#print(medicineList)
+	print("ar:")
+	print(class(ar))
     nRule <- length(medsChosen)
 	print("done")
     
@@ -436,8 +436,10 @@ relation <- function(meds, medsChosen, numClusters, sort, supp, conf, minL, maxL
 	
 	par(family="STKaiti")
 	jpeg(file = "static//pictures//table.jpeg")
-	inspect(sort(ar, by=sort))
+	sort(ar, by=sort)
 	dev.off()
+	
+	write(ar,file="association_rules.csv",sep=",",quote=T,row.names=F)
 }
 
 server(bh2bz)

@@ -39,6 +39,7 @@
 		</form>
 	</div>
 	<button type="submit" class="btn btn-primary" id="submit-relation">提交</button>
+	
 </div>
 <div class="graphs">
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -61,9 +62,10 @@
 	    <a class="nav-link" id="itemfreq-tab" data-toggle="tab" href="#itemfreq" role="tab" aria-controls="itemfreq" aria-selected="false">ItemFreq</a>
 	  </li>
 	  <li class="nav-item">
-	    <a class="nav-link" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="false">Table</a>
+	    <a class="nav-link" id="table-tab" data-toggle="tab" href="#table_tab" role="tab" aria-controls="table" aria-selected="false">Table</a>
 	  </li>
 	</ul>
+	
 	<div class="tab-content" id="myTabContent">
 	  <div class="tab-pane fade show active" id="grouped" role="tabpanel" aria-labelledby="grouped-tab">
 	  </div>
@@ -77,9 +79,13 @@
 	  </div>
 	  <div class="tab-pane fade" id="itemfreq" role="tabpanel" aria-labelledby="itemfreq-tab">
 	  </div>
-	  <div class="tab-pane fade" id="table" role="tabpanel" aria-labelledby="table-tab">
+	  <div class="tab-pane fade" id="table_tab" role="tabpanel" aria-labelledby="table-tab">
+		  <table id="table" class="table table-bordered table-hover">
+				<tbody>
+				</tbody>
+		  </table>
 	  </div>
-	</div>
+	  </div>
 </div>
 <script type="text/javascript" src="/src/relation.js"></script>
 <style type="text/css">
