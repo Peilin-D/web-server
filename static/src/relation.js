@@ -49,27 +49,27 @@ $("#submit-relation").click(e => {
       max:  $("#max").val()
     }
   }).done(data => {
-    // display images here
-	let path = data[0]
-	$("#grouped").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[0]}?${new Date().getTime()}>`)
-	$("#graph").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[1]}?${new Date().getTime()}>`)
-	$("#scatter").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[2]}?${new Date().getTime()}>`)
-	$("#parallel-coord").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[3]}?${new Date().getTime()}>`)
-	$("#matrix").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[4]}?${new Date().getTime()}>`)
-	$("#itemfreq").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[5]}?${new Date().getTime()}>`)
+  	let path = data[0]
+  	$("#grouped").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[0]}?${new Date().getTime()}>`)
+  	$("#graph").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[1]}?${new Date().getTime()}>`)
+  	$("#scatter").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[2]}?${new Date().getTime()}>`)
+  	$("#parallel-coord").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[3]}?${new Date().getTime()}>`)
+  	$("#matrix").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[4]}?${new Date().getTime()}>`)
+  	$("#itemfreq").append(`<img id="grouped_plot" style="width:600px;height:500px;" src=${path[5]}?${new Date().getTime()}>`)
 	
-	let table = data[1]
-	console.log(table[2][1])
-	console.log(table[2])
-	for (prop in table) {
-		
-		$("#table tbody").append(`
-			<tr>
-				<th>1</th>
-				<td>2</td>
-			</tr>
-		`)
-	}
+  	let table = data[1]
+  	let headers = table[0]
+    $("#relation-table tbody").append("<tr></tr>")
+    headers.forEach(h => {
+    	$("#relation-table tr").append(`<th>${h}</th>`)
+    })
+    for (let i = 1; i < table.length; i++) {
+      let row = ""
+      table[i].forEach(elem => {
+        row += `<td>${elem}</td>`
+      })
+      $("#relation-table tbody").append(`<tr>${row}</tr>`)
+    }
   })
 })
 
