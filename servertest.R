@@ -100,6 +100,10 @@ for(i in 1:40){
 	##
 
 	dataset<-dat
+	
+	#print(colnames(dataset)[1:40])
+	#write(colnames(dataset)[1:40], file="relation_meds.csv",sep=",")
+	
 	bin=T
 	vars=40
 	supp=0.1
