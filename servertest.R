@@ -7,7 +7,7 @@ Sys.setenv(LANG = "en_US.UTF-8")
 bc<-read.csv(file.path(getwd(), './b_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
 zc<-read.csv(file.path(getwd(), './z_coded.csv'), encoding="GB18030", stringsAsFactors=FALSE)
 mc<-read.csv(file.path(getwd(), './medicine.csv'), encoding="GB18030", stringsAsFactors=FALSE)
-
+relation_mc<-read.csv(file.path(getwd(), './data/relation_meds.csv'), encoding="GB18030", stringsAsFactors=FALSE)
 
 binghou <- rep_len("", dim(zc)[1])
 binghou_map = list()
@@ -32,8 +32,9 @@ for(i in 1 : (dim(mc)[1])){
 
 relation_meds <- rep_len("", 40)
 for(i in 1:40){
-	relation_meds[i] = mc[i, 1]
+	relation_meds[i] = relation_mc[i, 1]
 }
+
 
 	yiy<-read.csv("yiy.csv", encoding="GB18030", stringsAsFactors=FALSE, header=T)
 	
