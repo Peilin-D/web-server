@@ -59,9 +59,9 @@ $("#submit-relation").click(e => {
 	
   	let table = data[1]
   	let headers = table[0]
-    $("#relation-table tbody").append("<tr></tr>")
+    $("#relation-table thead").append("<tr></tr>")
     headers.forEach(h => {
-    	$("#relation-table tr").append(`<th>${h}</th>`)
+    	$("#relation-table thead tr").append(`<th>${h}</th>`)
     })
     for (let i = 1; i < table.length; i++) {
       let row = ""
