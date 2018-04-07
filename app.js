@@ -12,6 +12,7 @@ const xlsx = require('node-xlsx')
 let diseases = []
 let binghou = []
 let medicine = []
+let relation_medicine = []
 let zhongyao = {}
 let chufang = {}
 
@@ -26,6 +27,15 @@ if (fs.existsSync(`${__dirname}/data/userInfos.json`)) {
 		console.log(userInfos)
 	})
 }
+
+fs.readFile(`${__dirname}/data/relation_meds.csv`, (err, contents) => {
+	var str = iconv.decode(contents, 'gb18030')
+    csv.parse(str, (err, data) => {
+		data.forEach(d => {
+			relation_medicine.push(d[0]);
+		})
+    })
+})
 
 fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
    var str = iconv.decode(contents, 'gb18030')
@@ -309,7 +319,7 @@ app.get('/data/zhongyao', (req, res) => {
 })
 
 app.get('/data/medicines', (req, res) => {
-  res.send(medicine.slice(0, 40))
+  res.send(relation_medicine)
 })
 
 app.get('/data/diseases', (req, res) => {

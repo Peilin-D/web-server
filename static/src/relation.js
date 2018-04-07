@@ -66,9 +66,9 @@ $("#submit-relation").click(e => {
     for (let i = 1; i < table.length; i++) {
       let row = ""
       table[i].forEach(elem => {
-        row += `<td>${elem}</td>`
+        row += `<td>${elem}</td>`        //creat data cells for the table
       })
-      $("#relation-table tbody").append(`<tr>${row}</tr>`)
+      $("#relation-table tbody").append(`<tr>${row}</tr>`)        //create a row for the table
     }
   })
 })
