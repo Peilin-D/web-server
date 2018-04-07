@@ -109,7 +109,7 @@ fs.readdir(`${__dirname}/data/chufang`, (err, files) => {
 
 
 const {rServerConnection, callbacks} = require('./rServerClient')
-// var rServerConn = new rServerConnection()
+var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
