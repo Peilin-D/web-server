@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		form {
+			margin-bottom: 10px;
+		}
+		.table {
+			background-color: white;
+		}
+	</style>
+</head>
+<h1>药物检索</h1>
+<div>
+	<form class="col">
+		<div>请选择要检索的处方</div>
+	  <div class="form-group">
+	    <label for="chufang-input">处方名称</label>
+	    <input class="form-control dropdown-input" id="search-chufang" name="chufang-input" placeholder="选择处方">
+	    <div class="scrollable-menu" id="search-chufang"></div>
+	  </div>
+	  <button type="submit" class="btn btn-primary" id="submit-chufang">提交</button>
+<!-- 	  <a id="test" onclick="clickDownload(this)" download="downlaod.csv" href="#">download</a> -->
+	</form>
+	<div class="col">
+		<table id="chufang-table" class="table table-bordered table-hover">
+			<tbody>
+    	</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript" src="/bundles/chufang.js"></script>
+</html>

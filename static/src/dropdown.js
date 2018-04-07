@@ -1,49 +1,38 @@
-var filtered = []
-var original = []
-
 $(document).click(() => {
   $('.scrollable-menu').empty();
+  $('.scrollable-menu').css('width', 0)
 })
 
-function create(index, id) {
-  var elem = $(`<button class='dropdown-item' type='button'>${filtered[index]}</button>`)
+function create(item, id) {
+  var elem = $(`<button class='dropdown-item' type='button'>${item}</button>`)
   elem.click(() => {
-    $(`.dropdown-input#${id}`).val(filtered[index])
+    $(`#${id}.dropdown-input`).val(item)
     $('.scrollable-menu').empty()
   })
   return elem
 }
 
-function showMenu(id) {
+export default function showMenu(original, currenVal, id) {
+  let filtered = filter(original, currenVal)
   $('.scrollable-menu').empty();
   $('.scrollable-menu').css('width', $('.dropdown-input').outerWidth())
   var elems = []
   for (var i = 0; i < filtered.length; i++) {
-    elems.push(create(i, id))
+    elems.push(create(filtered[i], id))
   }
-  $(`.scrollable-menu#${id}`).append(elems);
+  $(`#${id}.scrollable-menu`).append(elems);
 }
 
-function filter(currentVal) {
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(search, pos) {
+    return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
+  };
+}
+
+function filter(original, currentVal) {
   if (currentVal === '') {
-    filtered = original;
+    return original;
   } else {
-    filtered = original.filter(d => d.startsWith(currentVal));
+    return original.filter(d => d.startsWith(currentVal));
   }
 }
-
-$('.dropdown-input').on('keyup', e => {
-	e.stopPropagation()
-	let val = e.target.value
-	let id = e.target.id
-	filter(val);
-	showMenu(id);
-})
-
-$('.dropdown-input').click(e => {
-	e.stopPropagation();
-	var val = e.target.value
-	var id = e.target.id
-  filter(val);
-  showMenu(id);
-})

@@ -7,11 +7,13 @@ const iconv = require('iconv-lite')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const cons = require('consolidate')
+const xlsx = require('node-xlsx')
 
 let diseases = []
 let binghou = []
 let medicine = []
 let zhongyao = {}
+let chufang = {}
 
 let userInfos = {} // user credentials & other info
 
@@ -79,8 +81,27 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
   })
 })
 
+fs.readdir(`${__dirname}/data/chufang`, (err, files) => {
+  files.forEach(f => {
+    if (!f.endsWith("xls")) {
+      return
+    }
+    fs.readFile(`${__dirname}/data/chufang/${f}`, (err, contents) => {
+      let data = xlsx.parse(contents)[0].data
+      for (var i = 1; i < data.length; i++) {
+        chufang[data[i][1]] = {
+          "出处": data[i][0],
+          "方剂组成": data[i][3],
+          "分类": data[i][4]
+        }
+      }
+    })
+  })
+})
+
+
 const {rServerConnection, callbacks} = require('./rServerClient')
-var rServerConn = new rServerConnection()
+// var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -94,14 +115,12 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 function checkAuth(req, res, next) {
-	console.log(req.session, req.session.valid)
 	if (req.url !== '/' && req.url !== '/login' && req.url !== '/register' && (!req.session || !req.session.valid)) {
 		res.status(401).send('请重新登录')
 		return
 	}
 	next()
 }
-
 
 app.engine('html', cons.mustache)
 app.set('views', './views')
@@ -122,10 +141,20 @@ app.get('/register', (req, res) => {
 })
 
 app.get('/main', (req, res) => {
-	res.render('panel')
+	res.render('main')
+})
+
+app.get('/disease', (req, res) => {
+  // TODO: use this disease to init r model
+  res.end('success')
+})
+
+app.get('/panel', (req, res) => {
+  res.render('panel')
 })
 
 app.post('/upload', upload.single("yiy"), (req, res) => {
+  console.log(req.file)
 	res.end("Successfully Upload")
 })
 
@@ -145,6 +174,11 @@ app.post('/login', (req, res) => {
 		req.session.valid = true
 		res.redirect('/main')
 	}
+})
+
+app.get('/signout', (req, res) => {
+  req.session.valid = false
+  res.end()
 })
 
 app.post('/register', (req, res) => {
@@ -213,11 +247,20 @@ app.get('/relation', (req, res) => {
 
 app.get('/jiansuo', (req, res) => {
 	let name = req.query.name
-	if (name in zhongyao) {
-		res.send(zhongyao[name])
-	} else {
-		res.send('')
-	}
+  if (zhongyao.hasOwnProperty(name)) {
+    res.send(zhongyao[name])
+  } else {
+    res.sendStatus(404)
+  }
+})
+
+app.get('/chufang', (req, res) => {
+  let name = req.query.name
+  if (chufang.hasOwnProperty(name)) {
+    res.send(chufang[name])
+  } else {
+    res.sendStatus(404)
+  }
 })
 
 app.get('/julei', (req, res) => {
@@ -267,6 +310,14 @@ app.get('/data/zhongyao', (req, res) => {
 
 app.get('/data/medicines', (req, res) => {
   res.send(medicine.slice(0, 40))
+})
+
+app.get('/data/diseases', (req, res) => {
+  res.send(diseases)
+})
+
+app.get('/data/chufang', (req, res) => {
+  res.send(Object.keys(chufang))
 })
 
 app.listen(3000, () => {

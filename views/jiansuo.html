@@ -16,11 +16,11 @@
 		<div>请选择要检索的中药</div>
 	  <div class="form-group">
 	    <label for="search">中药名称</label>
-	    <input class="form-control dropdown-input" id="search" name="search" placeholder="选择中药">
-	    <div class="scrollable-menu" id="search"></div>
+	    <input class="form-control dropdown-input" id="search-zhongyao" name="search-zhongyao" placeholder="选择中药">
+	    <div class="scrollable-menu" id="search-zhongyao"></div>
 	  </div>
-	  <button type="submit" class="btn btn-primary" id="submit-name">提交</button>
-	  <a id="test" onclick="clickDownload(this)" download="downlaod.csv" href="#">download</a>
+	  <button type="submit" class="btn btn-primary" id="submit-zhongyao">提交</button>
+<!-- 	  <a id="test" onclick="clickDownload(this)" download="downlaod.csv" href="#">download</a> -->
 	</form>
 	<div class="col">
 		<table id="description" class="table table-bordered table-hover">
@@ -29,6 +29,5 @@
 		</table>
 	</div>
 </div>
-<script type="text/javascript" src="/src/dropdown.js"></script>
-<script type="text/javascript" src="/src/jiansuo.js"></script>
+<script type="text/javascript" src="/bundles/jiansuo.js"></script>
 </html>

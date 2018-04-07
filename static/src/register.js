@@ -29,3 +29,8 @@ $("#register").click(e => {
 		}
 	})
 })
+
+$("#cancel").click(e => {
+  console.log('clicked', window.location.href)
+  window.location.href = "/login"
+})

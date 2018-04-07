@@ -4,41 +4,51 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/base.css">
-	<link rel="stylesheet" type="text/css" href="/css/mainPage.css">
 	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		#file-form {
+			margin-bottom: 10px;
+		}
+		#yiy {
+			width: 0px;
+			visibility: hidden;
+		}
+		#yiy-label {
+			font-size: 1.25em;
+			font-weight: 700;
+			color: white;
+		}
+	</style>
 </head>
 <body>
-	<div class="topright">
-		<span id="myname"></span>
-		<a id="signout">| 登出</a>
+	<div class="loader-div">
+		<div class="loader"></div>
 	</div>
 	<div class="container">
 		<div class="row" style="margin: 50px;">
 			<div class="col align-items-center">
-				<h3 style="margin-bottom: 20px">导入 .csv 文件</h3>
-				<div 
-				  class="row align-items-center justify-content-center" 
-				  style="width: 60vw;height: 200px;border-radius: 10px;border-style: dashed;cursor: pointer;margin-bottom: 30px" 
-				  id="choose">
-					<div>点击/拖入文件</div>
-				</div>
+				<!-- <h3 style="margin-bottom: 20px">导入 .csv 文件</h3>
+				<form id="file-form" enctype="multipart/form-data" method="post">
+					<label for="yiy" class="btn btn-primary" id="yiy-label">
+						<img src="/icons/upload-arrow.svg" height="20" width="20">
+						请选择处方文件
+					</label>
+					<input type="file" name="yiy" id="yiy" 
+						accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+					<span id="file-chosen"></span>
+				</form> -->
 				<div id="holdtext"></div>
 				<div>选择病症</div>
 				<div>
-					<input type="text" class="dropdown-input" placeholder="肠癌病">
-					<div class="scrollable-menu pull-right" role="menu"></div>
+					<input type="text" class="form-control dropdown-input" id="disease" placeholder="肠癌病">
+					<div class="scrollable-menu" role="menu" id="disease"></div>
 				</div>
-				<button class="btn btn-success col-4" id="run" style="margin-top: 20px;">开始分析</button>
+				<button class="btn btn-success" id="run" style="margin-top: 20px;">开始分析</button>
 				<div id="notification"></div>
 			</div>
 		</div>
 	</div>
-	</body>
-	<script type="text/javascript">
-		$("#signout").click(e => {
-			console.log('back')
-	    window.history.back();
-		})
-	</script>
+	<script type="text/javascript" src="/bundles/upload.js"></script>
+</body>
 </html>
