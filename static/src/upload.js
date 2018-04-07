@@ -1,11 +1,4 @@
-import setList from './dropdown.js'
-
-// polyfill startsWith
-if (!String.prototype.startsWith) {
-  String.prototype.startsWith = function(search, pos) {
-    return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
-  };
-}
+import showMenu from './dropdown.js'
 
 let bingzheng = []
 
@@ -19,14 +12,13 @@ $(document).ready(() => {
 
 function getData() {
   if (bingzheng.length > 0) {
-    setList(bingzheng)
     return
   }
   $.ajax({
     url: '/data/diseases',
   }).done(data => {
     bingzheng = data
-    setList(data)
+    $("input#disease").val(bingzheng[0])
   }).fail(err => {
     if(err.status === 401) {
       alert(err.responseText)
@@ -54,11 +46,26 @@ $("#run").click(e => {
   e.preventDefault()
   // show loading animation
   $(".loader-div").css("display", "block")
-  // $(".loader-div").toggleClass("loader")
   $.ajax({
     url: "/disease",
-    data: $("input#disease").val()
+    data: {
+      disease: $("input#disease").val()
+    }
   }).done(() => {
-    window.location.href = "/panel"
+    window.location.replace("/panel")
   })
+})
+
+$('#disease.dropdown-input').on('keyup', e => {
+  e.stopPropagation()
+  let val = e.target.value
+  let id = e.target.id
+  showMenu(bingzheng, val, id);
+})
+
+$('#disease.dropdown-input').click(e => {
+  e.stopPropagation();
+  var val = e.target.value
+  var id = e.target.id
+  showMenu(bingzheng, val, id);
 })

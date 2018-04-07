@@ -22,6 +22,21 @@ a:hover{
 }
 */
 
+.head-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.small-btn {
+	width: 100px;
+	height: 30px;
+	display: inline-block;
+	line-height: 10px;
+	text-align: center;
+	margin: 10px;
+}
+
 .page-container {
 	position: relative;
 }

@@ -79,3 +79,8 @@ $("#about").click(e => {
   $(".page-content").css("visibility", "hidden")
   $("#page-about").css("visibility", "visible")
 })
+
+$("#back-btn").click(e => {
+  e.preventDefault()
+  window.location.replace("/main")
+})

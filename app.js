@@ -9,7 +9,7 @@ const session = require('express-session')
 const cons = require('consolidate')
 const xlsx = require('node-xlsx')
 
-let diseases = []
+let diseases = {}
 let binghou = []
 let medicine = []
 let relation_medicine = []
@@ -48,12 +48,11 @@ fs.readFile(`${__dirname}/data/medicine.csv`, (err, contents) => {
 
 fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
   var str = iconv.decode(contents, 'gb18030')
+  var chosenDiseases = [1, 12, 17, 23, 26, 58, 158, 162, 179, 198]
   csv.parse(str, (err, data) => {
-    data.forEach(d => {
-      diseases.push(d[0]);
+    chosenDiseases.forEach(idx => {
+      diseases[data[idx][0]] = idx
     })
-    diseases.splice(0, 1);
-    filteredDiseases = diseases;
   })
 })
 
@@ -87,7 +86,6 @@ fs.readFile(`${__dirname}/data/z_coded.csv`, (err, contents) => {
       binghou.push(d[0]);
     })
     binghou.splice(0, 1);
-    filteredBinghou = binghou;
   })
 })
 
@@ -155,7 +153,9 @@ app.get('/main', (req, res) => {
 })
 
 app.get('/disease', (req, res) => {
-  // TODO: use this disease to init r model
+  let dname = req.query.disease
+  let dindex = diseases[dname]
+  // TODO: send dindex into r server
   res.end('success')
 })
 
@@ -323,7 +323,8 @@ app.get('/data/medicines', (req, res) => {
 })
 
 app.get('/data/diseases', (req, res) => {
-  res.send(diseases)
+  console.log(diseases)
+  res.send(Object.keys(diseases))
 })
 
 app.get('/data/chufang', (req, res) => {
