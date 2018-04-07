@@ -9,12 +9,13 @@ const session = require('express-session')
 const cons = require('consolidate')
 const xlsx = require('node-xlsx')
 
-let diseases = {}
+let diseases = []
 let binghou = []
 let medicine = []
 let relation_medicine = []
 let zhongyao = {}
 let chufang = {}
+let diseasesToAnalyze = {}
 
 let userInfos = {} // user credentials & other info
 
@@ -50,8 +51,11 @@ fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
   var str = iconv.decode(contents, 'gb18030')
   var chosenDiseases = [1, 12, 17, 23, 26, 58, 158, 162, 179, 198]
   csv.parse(str, (err, data) => {
+    for (var i = 1; i < data.length; i++) {
+      diseases.push(data[i][0])
+    }
     chosenDiseases.forEach(idx => {
-      diseases[data[idx][0]] = idx
+      diseasesToAnalyze[data[idx][0]] = idx
     })
   })
 })
@@ -154,7 +158,7 @@ app.get('/main', (req, res) => {
 
 app.get('/disease', (req, res) => {
   let dname = req.query.disease
-  let dindex = diseases[dname]
+  let dindex = diseasesToAnalyze[dname]
   // TODO: send dindex into r server
   res.end('success')
 })
