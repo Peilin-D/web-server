@@ -3,4 +3,6 @@ node_modules
 R-Portable
 static/lib
 static/bundles
-data/userInfos.json
+static/pictures
+*.pdf
+data/
