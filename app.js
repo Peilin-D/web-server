@@ -9,6 +9,7 @@ const session = require('express-session')
 const cons = require('consolidate')
 const xlsx = require('node-xlsx')
 
+let indexOfDiease = 0
 let diseases = []
 let binghou = []
 let medicine = []
@@ -56,6 +57,7 @@ fs.readFile(`${__dirname}/data/b_coded.csv`, (err, contents) => {
     }
     chosenDiseases.forEach(idx => {
       diseasesToAnalyze[data[idx][0]] = idx
+	  indexOfDiease = chosenDiseases.indexOf(idx)
     })
   })
 })
@@ -113,7 +115,7 @@ fs.readdir(`${__dirname}/data/chufang`, (err, files) => {
 
 
 const {rServerConnection, callbacks} = require('./rServerClient')
-// var rServerConn = new rServerConnection()
+var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -159,6 +161,8 @@ app.get('/main', (req, res) => {
 app.get('/disease', (req, res) => {
   let dname = req.query.disease
   let dindex = diseasesToAnalyze[dname]
+  let msg = {type: 'ChosenDisease', data: dindex}
+  rServerConn.send(msg)
   // TODO: send dindex into r server
   res.end('success')
 })
@@ -220,6 +224,7 @@ app.get('/wenzhen', (req, res) => {
 	let msg = {type: 'wenzhen', data: reqData}
 	rServerConn.send(msg)
 	callbacks['wenzhen'] = function (data) {
+		console.log(data)
 		let send = []
 		//send = diseases[data]
 		data.forEach(d => {
@@ -289,7 +294,23 @@ app.get('/julei', (req, res) => {
 		let path = []
 		path.push('/pictures/tree_structure.jpeg')
 		path.push('/pictures/julei.jpeg')
-		res.send(path)
+		
+		let table = []
+		let file = `${__dirname}` + '/data/jiliang/' + indexOfDiease.toString() + '.csv'
+		console.log(file)
+		fs.readFile(file, (err, contents) => {
+			console.log(err)
+		  var str = iconv.decode(contents, 'gb18030')
+		  csv.parse(str, (err, data) => {
+			data.forEach(d => {
+			  table.push(d)
+			})
+			let send = []
+			send.push(path)
+			send.push(table)
+			res.send(send)
+		  })
+		})
 	}
 })
 

@@ -9,11 +9,12 @@ $("#submit-freq").click(e => {
 			freq: freq
 		}
 	}).done(data => {
-		for (prop in data) {
+		console.log(data)
+		for (var i = 0; i < data.length; i++) {
 			$("#chufang tbody").append(`
 				<tr>
-					<th>${prop}</th>
-					<td>${data[prop]}</td>
+					<th>${i}</th>
+					<td>${data[i]}</td>
 				</tr>
 			`)
 		}

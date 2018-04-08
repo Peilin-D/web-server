@@ -33,7 +33,7 @@ $("#submit-relation").click(e => {
   $("#parallel-coord").empty()
   $("#matrix").empty()
   $("#itemfreq").empty()
-  $("#table").empty()
+  $("#relation-table").empty()
   let meds = $("#medicines input:checked").map(function () {
     return $(this).attr('id')
   }).get()
@@ -59,6 +59,8 @@ $("#submit-relation").click(e => {
 	
   	let table = data[1]
   	let headers = table[0]
+	$("#relation-table").append("<thead></thead>")
+	$("#relation-table").append("<tbody></tbody>")
     $("#relation-table thead").append("<tr></tr>")
     headers.forEach(h => {
     	$("#relation-table thead tr").append(`<th>${h}</th>`)
