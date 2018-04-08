@@ -1,9 +1,5 @@
 library('jsonlite')
 library('stringr')
-library(shiny)
-
-
-
 
 Sys.setlocale(, 'chinese')
 Sys.setenv(LANG = "en_US.UTF-8")
