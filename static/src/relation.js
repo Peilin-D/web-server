@@ -1,6 +1,6 @@
 $("#medicines").ready(() => {
   $.ajax({
-    url: "data/medicines"
+    url: "/data/medicines"
   }).done(meds => {
     let i = 0
     while(i < meds.length) {
