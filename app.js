@@ -66,7 +66,7 @@ fs.readFile(`${__dirname}/data/zhongyao.xlsx`, (err, contents) => {
 	let data = xlsx.parse(contents)[0].data
 	let names = data[0]
 	for (var i = 0; i < names.length; i++) {
-		if (names[i] === '') {
+		if (names[i] === '' || names[i] === undefined) {
 			continue
 		}
 		zhongyao[names[i]] = {
@@ -113,7 +113,7 @@ fs.readdir(`${__dirname}/data/chufang`, (err, files) => {
 
 
 const {rServerConnection, callbacks} = require('./rServerClient')
-// var rServerConn = new rServerConnection()
+var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
