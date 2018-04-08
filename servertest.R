@@ -1,6 +1,10 @@
 library('jsonlite')
 library('stringr')
 library(shiny)
+
+
+
+
 Sys.setlocale(, 'chinese')
 Sys.setenv(LANG = "en_US.UTF-8")
 
@@ -52,10 +56,10 @@ for(i in 1:40){
 	yiyuan_sample = yiy
 
 	## Build database
-
+prep <- function(indexOfChosenDiseases){
 	dat_V5 = NULL
 
-	dat_12_val = unique(yiyuan_sample[,12])[1]
+	dat_12_val = unique(yiyuan_sample[,12])[indexOfChosenDiseases]
 	tmp = yiyuan_sample[yiyuan_sample[,12] ==dat_12_val,]
 
 	#tmp = yiyuan_sample[yiyuan_sample[,12] ==dat_12_val,]
@@ -137,8 +141,19 @@ for(i in 1:40){
 		df$rhs <- gsub(pattern='\\{', replacement='', x=df$rhs)
 		df$rhs <- gsub(pattern='}', replacement='', x=df$rhs)
 	}
+	ret = list()
+	ret[['bh2bz']] = bh2bz
+	ret[['dataset']] = dataset
+	ret[['dat']] = dat
+	ret[['m1']] = m1
+	ret[['dis']] = dis
+	ret[['zero_var_col']] = zero_var_col
+	#print(ret[['bh2bz']])
+	return(ret)
+}
 
-server <- function(bh2bz){
+server <- function(){
+	retData = list()
 	conn <- socketConnection(host="localhost", port = 6011, blocking=TRUE, server=TRUE, open="r+", timeout=1000)
 	while(TRUE) {
 		jsonData <- readLines(conn, 1)
@@ -167,6 +182,23 @@ server <- function(bh2bz){
 			break
 		}
 		
+		if(type == 'ChosenDisease'){
+			data <- tryCatch(
+				{
+					df$data
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			print(data)
+			retData = prep(data)
+			if (is.na(data)) {
+				break
+			}
+		}
+		
 		if(type != 'relation'){
 			data <- tryCatch(
 				{
@@ -184,7 +216,7 @@ server <- function(bh2bz){
 		
 		if(type == 'wenzhen'){
 			print('wenzhen')
-			print(df$data)
+			bh2bz <- retData[['bh2bz']]
 			df$data <- wenzhen(data, bh2bz)
 			print('df:')
 		}
@@ -193,14 +225,14 @@ server <- function(bh2bz){
 			options(digits=3)
 			freq = as.double(df$data)
 			print(freq)
-			df$data <- tuijian(freq)
+			df$data <- tuijian(freq, retData[['dat']])
 			#tuijian(freq)
 			#print(df$data)
 		}
 		else if(type == 'julei'){
 			print('julei:')
 			print(df$data[1])
-			juleiPlot1(df$data[1], df$data[2], df$data[3])
+			juleiPlot1(df$data[1], df$data[2], df$data[3], retData[['m1']], retData[['dis']], retData[['zero_var_col']])
 		}
 		else if(type == 'relation'){
 			print('relation')
@@ -293,7 +325,7 @@ server <- function(bh2bz){
 			)
 			max = strtoi(max)
 			print(max)
-			relation(meds, medsChosen, numClusters, sort, supp, conf, min, max)
+			relation(meds, medsChosen, numClusters, sort, supp, conf, min, max, retData[['dataset']])
 		}
 	  writeLines(toJSON(df), conn)
 	}
@@ -309,6 +341,8 @@ wenzhen <- function(data, bh2bz){
 			bh[i] = strtoi(data[i])
 		else break
 	}
+	print('bh2bz')
+	print(bh2bz)
 	print(bh)
 	
     zhenduan = NULL
@@ -340,7 +374,7 @@ wenzhen <- function(data, bh2bz){
 	#return(bingzheng_map[[zhenduan]])
 }
 
-tuijian <- function(freq){
+tuijian <- function(freq, dat){
 		s <- dat[,itemFrequency(dat)>freq]
 		bw <- labels(s)
 		ss <- as.matrix(bw)
@@ -370,7 +404,7 @@ tuijian <- function(freq){
 		return(ret)
 }
 
-juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
+juleiPlot1 <- function(distance_index, juleiMethod_index, cutval, m1, dis, zero_var_col){
 	distanceList = c("euclidean", "maximum", "manhattan", "canberra", "binary")
 	juleiMethodList = c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "centroid")
 	distance = distanceList[distance_index]
@@ -394,7 +428,7 @@ juleiPlot1 <- function(distance_index, juleiMethod_index, cutval){
 	return("ready")
 }
 
-relation <- function(meds, medsChosen, numClusters, sort, supp, conf, minL, maxL){
+relation <- function(meds, medsChosen, numClusters, sort, supp, conf, minL, maxL, dataset){
 	medicineList = c()
 	for(i in 1:length(medsChosen)){
 		medicineList <- append(medicineList, relation_meds[medsChosen[i]])
@@ -447,5 +481,5 @@ relation <- function(meds, medsChosen, numClusters, sort, supp, conf, minL, maxL
 	write(ar,file="association_rules.csv",sep=",",quote=T,row.names=F)
 }
 
-server(bh2bz)
+server()
 
