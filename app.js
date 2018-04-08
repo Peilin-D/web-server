@@ -113,7 +113,7 @@ fs.readdir(`${__dirname}/data/chufang`, (err, files) => {
 
 
 const {rServerConnection, callbacks} = require('./rServerClient')
-var rServerConn = new rServerConnection()
+// var rServerConn = new rServerConnection()
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -327,8 +327,7 @@ app.get('/data/medicines', (req, res) => {
 })
 
 app.get('/data/diseases', (req, res) => {
-  console.log(diseases)
-  res.send(Object.keys(diseases))
+  res.send(Object.keys(diseasesToAnalyze))
 })
 
 app.get('/data/chufang', (req, res) => {
