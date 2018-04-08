@@ -76,7 +76,10 @@ prep <- function(indexOfChosenDiseases){
 	dat_X5<-dat_V5
 	dat <- as(dat_V5, "transactions")
 	rules <- apriori(dat, parameter = list(supp = 0.5, conf = 0.9, target = "rules"))
+	
 	sy<-itemFrequency(dat)
+	
+	
 	yy<-which(sy>0.01)
 	ssy<-sy[yy]
 	med.dictionary <- names(itemFrequency(dat))[itemFrequency(dat)>0.6]
@@ -148,6 +151,7 @@ prep <- function(indexOfChosenDiseases){
 	ret[['m1']] = m1
 	ret[['dis']] = dis
 	ret[['zero_var_col']] = zero_var_col
+	ret[['sy']] = sy
 	#print(ret[['bh2bz']])
 	return(ret)
 }
@@ -180,6 +184,22 @@ server <- function(){
 		)
 		if (is.na(type)) {
 			break
+		}
+		
+		if(type == 'freqSort'){
+			freqSort <- sort(retData[['sy']], decreasing=T)[1:40]
+			write.csv(freqSort,file="./data/relation_freq.csv")
+			data <- tryCatch(
+				{
+					df$data
+				},
+				error=function(cond) {
+					print("Error data")
+					return (NA)
+				}
+			)
+			print(data)
+			df$data <- 'success'
 		}
 		
 		if(type == 'ChosenDisease'){

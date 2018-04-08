@@ -30,7 +30,7 @@ if (fs.existsSync(`${__dirname}/data/userInfos.json`)) {
 	})
 }
 
-fs.readFile(`${__dirname}/data/relation_meds.csv`, (err, contents) => {
+fs.readFile(`${__dirname}/data/relation_freq.csv`, (err, contents) => {
 	var str = iconv.decode(contents, 'gb18030')
     csv.parse(str, (err, data) => {
 		data.forEach(d => {
@@ -237,7 +237,7 @@ app.get('/wenzhen', (req, res) => {
 app.get('/relation', (req, res) => {
 	let msg = {type: 'relation', medsChosen: req.query.medsChosen, numClusters: req.query.numClusters, supp: req.query.supp, conf:req.query.conf, sort:req.query.sort, min:req.query.min, max:req.query.max}
 	
-  rServerConn.send(msg)
+    rServerConn.send(msg)
 	callbacks['relation'] = function(data) {
 		let path = []
 		path.push('/pictures/grouped_plot.jpeg')
@@ -344,7 +344,20 @@ app.get('/data/zhongyao', (req, res) => {
 })
 
 app.get('/data/medicines', (req, res) => {
-  res.send(relation_medicine)
+	let msg = {type: 'freqSort', data: 'request'}
+	rServerConn.send(msg)
+	let send = []
+	callbacks['freqSort'] = function(data){
+		fs.readFile(`${__dirname}/data/relation_freq.csv`, (err, contents) => {
+		  var str = iconv.decode(contents, 'gb18030')
+		  csv.parse(str, (err, data) => {
+			for(var i = 1; i < data.length; i++){
+			  send.push(data[i][0])
+			}
+			res.send(send)
+		  })
+		})
+	}
 })
 
 app.get('/data/diseases', (req, res) => {
