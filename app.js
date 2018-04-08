@@ -308,7 +308,6 @@ app.get('/tuijian', (req, res) => {
 			}
 			send.push(listOfSend)
 		})
-		console.log(send)
 		res.send(send)
 	}
 })
